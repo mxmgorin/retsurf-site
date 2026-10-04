@@ -1,0 +1,47 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+  # Screenshots and the logo live in the app repo, which cannot trigger this one.
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: site
+      # The page shares its images with the app README, so they are copied in rather than duplicated.
+      - uses: actions/checkout@v7
+        with:
+          repository: mxmgorin/retsurf
+          path: app
+          sparse-checkout: resources
+      - name: Assemble
+        run: |
+          mkdir -p _site/images
+          rsync -a --exclude=.git --exclude=.github --exclude=README.md site/ _site/
+          cp app/resources/retsurf.svg _site/
+          cp app/resources/images/*.png app/resources/images/*.jpg _site/images/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
