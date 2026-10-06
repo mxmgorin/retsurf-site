@@ -310,7 +310,7 @@ footer {
   section, section.wrap { padding-top: 44px; padding-bottom: 44px; }
   .hero { padding-top: 16px; }
   .top nav { gap: 14px; font-size: 15px; }
-  .top nav a:not(:last-child):not([href="#install"]) { display: none; }
+  .top nav a:not([href="#install"]) { display: none; }
   .devices, .shots, .clips, .links, .also { grid-template-columns: 1fr; }
   .more { aspect-ratio: auto; }
 }
