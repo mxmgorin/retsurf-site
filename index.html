@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>retsurf - a web browser for your handheld</title>
-  <meta name="description" content="retsurf is a web browser built on Servo for gamepad and keyboard. It runs on retro handhelds (PortMaster, Miyoo Mini), Android, Linux, Windows and macOS.">
+  <meta name="description" content="retsurf is a web browser built on Servo for gamepad and keyboard. It runs on retro handhelds (PortMaster, OnionOS, Allium, spruceOS, CrossMix-OS, NextUI, NX Redux), Android, Linux, Windows and macOS.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://retsurf.app/">
   <meta property="og:title" content="retsurf - a web browser for your handheld">
@@ -44,7 +44,7 @@
             <a href="https://github.com/mxmgorin/retsurf"><img src="https://img.shields.io/github/stars/mxmgorin/retsurf?style=flat-square&labelColor=16171a&color=3fb8a0&label=stars" alt="GitHub stars" height="20"></a>
             <a href="https://github.com/mxmgorin/retsurf/releases"><img src="https://img.shields.io/github/downloads/mxmgorin/retsurf/total?style=flat-square&labelColor=16171a&color=3fb8a0&label=downloads" alt="Downloads" height="20"></a>
           </div>
-          <p class="platforms">PortMaster &middot; Android &middot; Windows &middot; macOS &middot; Linux &middot; Miyoo Mini</p>
+          <p class="platforms">Retro handhelds &middot; Android &middot; Windows &middot; macOS &middot; Linux</p>
         </div>
         <img class="hero-photo" src="images/retsurf-rg35xx-sp.jpg" alt="retsurf on an Anbernic RG35XX SP, the on-screen keyboard raised under the address field" width="800" height="800">
       </div>
@@ -101,8 +101,8 @@
           <div class="spot-text">
             <h3>Game mode and web games</h3>
             <p>Game mode hides the browser and routes input directly to the page. Input maps let you map controls to keyboard keys, mouse, or gamepad input, with an editor built in.</p>
-            <p>It can also cut the game out of the page, fit it pixel-perfectly to the screen, and apply CRT, LCD, or upscaling shaders. RetroArch shaders work too.</p>
-            <p>Pages get WebGL 2, the Gamepad API, Web Audio, and IndexedDB, plus shims that let Emscripten exports from itch.io run.</p>
+            <p>It can also cut the game out of the page, fit it pixel-perfectly to the screen, and apply CRT, LCD, or upscaling shaders.</p>
+            <p>Browser games from itch.io and similar sites run too, with WebGL 2, gamepad, and audio.</p>
           </div>
           <img class="spot-media" src="images/retsurf-game-mode.png" alt="Quick Access over the WebGL racer HexGL in game mode, drawn through a CRT shader" width="640" height="480" loading="lazy">
         </article>
@@ -144,27 +144,42 @@
     <section id="install" class="band">
       <div class="wrap">
         <h2>Install</h2>
-        <p>Pick the package for your device. All builds, including nightlies, are on <a href="https://github.com/mxmgorin/retsurf/releases">GitHub Releases</a>.</p>
+        <p>Pick the package for your system. All builds, including nightlies, are on <a href="https://github.com/mxmgorin/retsurf/releases">GitHub Releases</a>.</p>
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Device</th><th>Package</th><th>Where it goes</th></tr>
+              <tr><th>OS</th><th>Package</th><th>Where it goes</th></tr>
             </thead>
             <tbody>
               <tr>
-                <td><a href="https://portmaster.games/supported-devices.html">PortMaster handhelds</a><span class="sub">ArkOS, dArkOS, EmuELEC, Knulli, muOS, ROCKNIX</span></td>
+                <td><a href="https://portmaster.games/supported-devices.html">PortMaster</a><span class="sub">ArkOS, dArkOS, EmuELEC, Knulli, muOS, ROCKNIX</span></td>
                 <td><a href="https://github.com/mxmgorin/retsurf/releases/latest/download/retsurf-portmaster.zip">retsurf-portmaster.zip</a></td>
                 <td>ports folder, e.g. <code>/roms/ports/</code></td>
               </tr>
               <tr>
-                <td>Miyoo Mini Flip and Plus<span class="sub">OnionOS</span></td>
+                <td><a href="https://onionui.github.io/">OnionOS</a><span class="sub">Miyoo Mini Plus and Mini Flip</span></td>
                 <td><a href="https://github.com/mxmgorin/retsurf/releases/latest/download/retsurf-onionos.zip">retsurf-onionos.zip</a></td>
                 <td><code>App/Retsurf/</code> on the SD card</td>
               </tr>
               <tr>
-                <td>Miyoo Mini Flip and Plus<span class="sub">Allium</span></td>
+                <td><a href="https://github.com/goweiwen/Allium">Allium</a><span class="sub">Miyoo Mini Plus and Mini Flip</span></td>
                 <td><a href="https://github.com/mxmgorin/retsurf/releases/latest/download/retsurf-allium.zip">retsurf-allium.zip</a></td>
                 <td><code>Apps/Retsurf.pak/</code> on the SD card</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/spruceUI/spruceOS">spruceOS</a><span class="sub">Miyoo, TrimUI and Anbernic handhelds</span></td>
+                <td><a href="https://github.com/mxmgorin/retsurf/releases/latest/download/retsurf-spruceos-aarch64.zip">aarch64</a>, <a href="https://github.com/mxmgorin/retsurf/releases/latest/download/retsurf-spruceos-armhf.zip">Miyoo Mini</a></td>
+                <td>root of the SD card</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/LoveRetro/NextUI">NextUI</a>, <a href="https://github.com/mohammadsyuhada/nx-redux">NX Redux</a><span class="sub">TrimUI Smart Pro, Smart Pro S and Brick</span></td>
+                <td><a href="https://github.com/mxmgorin/retsurf/releases/latest/download/retsurf-nextui.zip">retsurf-nextui.zip</a></td>
+                <td>root of the SD card</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/cizia64/CrossMix-OS">CrossMix-OS</a><span class="sub">TrimUI Smart Pro</span></td>
+                <td><a href="https://github.com/mxmgorin/retsurf/releases/latest/download/retsurf-crossmix.zip">retsurf-crossmix.zip</a></td>
+                <td>root of the SD card</td>
               </tr>
               <tr>
                 <td>Android</td>
