@@ -74,11 +74,16 @@ h1 { font-size: clamp(34px, 5.5vw, 56px); font-weight: 700; letter-spacing: -0.0
 h2 { font-size: clamp(26px, 3.5vw, 36px); font-weight: 700; margin-bottom: 28px; }
 h3 { font-size: 22px; font-weight: 700; }
 
-.accent {
-  background: linear-gradient(90deg, var(--teal), var(--coral));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.accent { color: var(--teal); }
+
+/* Servo has no background-clip: text and would paint the gradient as a box. */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .accent {
+    background: linear-gradient(90deg, var(--teal), var(--coral));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 /* Header */
@@ -118,7 +123,7 @@ h3 { font-size: 22px; font-weight: 700; }
 .hero-grid {
   position: relative;
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: 56px;
   align-items: center;
 }
@@ -162,7 +167,7 @@ h3 { font-size: 22px; font-weight: 700; }
 
 .devices {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
   padding-top: 0;
 }
@@ -177,7 +182,6 @@ h3 { font-size: 22px; font-weight: 700; }
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--ink);
-  aspect-ratio: 1;
 }
 .more:hover { text-decoration: none; border-color: var(--teal); }
 .more strong { font-family: var(--display); font-size: 24px; }
@@ -202,7 +206,7 @@ figcaption { color: var(--dim); font-size: 14px; margin-top: 10px; }
 
 .spot {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 48px;
   align-items: center;
   padding: 36px 0;
@@ -223,7 +227,7 @@ figcaption { color: var(--dim); font-size: 14px; margin-top: 10px; }
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px 40px;
   color: var(--dim);
   font-size: 15px;
@@ -245,7 +249,7 @@ figcaption { color: var(--dim); font-size: 14px; margin-top: 10px; }
 
 .shots, .clips {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 }
 .shots img, .clips video { border: 1px solid var(--line); border-radius: 10px; }
@@ -272,7 +276,7 @@ td .sub { display: block; color: var(--dim); font-size: 13px; }
 
 .links {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 .links a {
@@ -299,11 +303,11 @@ footer {
 /* Narrow screens */
 
 @media (max-width: 860px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 36px; }
-  .spot { grid-template-columns: 1fr; gap: 24px; }
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .spot { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .spot:nth-of-type(even) .spot-media { order: 0; }
-  .links { grid-template-columns: repeat(2, 1fr); }
-  .shots, .clips { grid-template-columns: repeat(2, 1fr); }
+  .links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shots, .clips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 560px) {
@@ -311,6 +315,5 @@ footer {
   .hero { padding-top: 16px; }
   .top nav { gap: 14px; font-size: 15px; }
   .top nav a:not([href="#install"]) { display: none; }
-  .devices, .shots, .clips, .links, .also { grid-template-columns: 1fr; }
-  .more { aspect-ratio: auto; }
+  .devices, .shots, .clips, .links, .also { grid-template-columns: minmax(0, 1fr); }
 }
