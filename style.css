@@ -155,7 +155,7 @@ h3 { font-size: 22px; font-weight: 700; }
   font-size: 14px;
 }
 .badge {
-  display: inline-flex;
+  display: none;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 4px;
@@ -164,6 +164,7 @@ h3 { font-size: 22px; font-weight: 700; }
   line-height: 20px;
   padding-left: 7px;
 }
+.badge.filled { display: inline-flex; }
 .badge:hover { text-decoration: none; border-color: var(--teal); }
 .badge b {
   margin-left: 7px;
@@ -172,7 +173,6 @@ h3 { font-size: 22px; font-weight: 700; }
   color: var(--bg);
   font-weight: 600;
 }
-.badge b:empty { display: none; }
 
 .platforms { color: var(--dim); font-size: 14px; margin: 12px 0 0; }
 
