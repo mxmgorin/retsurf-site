@@ -129,6 +129,7 @@ h3 { font-size: 22px; font-weight: 700; }
 }
 
 .lead { color: var(--dim); font-size: 19px; margin: 0 0 30px; max-width: 34em; }
+.lead strong { color: var(--ink); }
 
 .actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
@@ -239,6 +240,14 @@ figcaption { color: var(--dim); font-size: 14px; margin-top: 10px; }
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
+.spot + .shots { margin-bottom: 24px; }
+.shots + .spot { border-top: 1px solid var(--line); margin-top: 24px; }
+.shots.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sub-title { margin-top: 48px; }
+/* Two plain sections in a row: a rule keeps them apart. */
+section.wrap + section.wrap { border-top: 1px solid var(--line); }
+.section-lead { color: var(--dim); max-width: 46em; margin: -12px 0 28px; }
+
 .also-title { margin-top: 48px; font-size: 18px; color: var(--dim); font-weight: 500; }
 .also {
   list-style: none;
@@ -333,5 +342,5 @@ footer {
   .hero { padding-top: 16px; }
   .top nav { gap: 14px; font-size: 15px; }
   .top nav a:not([href="#install"]) { display: none; }
-  .devices, .shots, .clips, .links, .also { grid-template-columns: minmax(0, 1fr); }
+  .devices, .shots, .shots.two, .clips, .links, .also { grid-template-columns: minmax(0, 1fr); }
 }

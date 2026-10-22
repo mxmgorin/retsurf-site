@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>retsurf - a web browser for your handheld</title>
-  <meta name="description" content="retsurf is a web browser built on Servo for gamepad and keyboard. It runs on retro handhelds (PortMaster, OnionOS, Allium, spruceOS, CrossMix-OS, NextUI, NX Redux), Android, Linux, Windows and macOS.">
+  <title>retsurf - web apps and games on your handheld</title>
+  <meta name="description" content="retsurf turns sites into apps and games on your handheld: a web browser built on Servo for gamepad and keyboard. It runs on retro handhelds (PortMaster, OnionOS, Allium, spruceOS, CrossMix-OS, NextUI, NX Redux), Android, Linux, Windows and macOS.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://retsurf.app/">
-  <meta property="og:title" content="retsurf - a web browser for your handheld">
-  <meta property="og:description" content="Web browser built on Servo for gamepad and keyboard, on retro handhelds, Android and desktop.">
+  <meta property="og:title" content="retsurf - web apps and games on your handheld">
+  <meta property="og:description" content="Sites as apps and games on retro handhelds, Android and desktop. A real web browser built on Servo, driven from a gamepad or a keyboard.">
   <meta property="og:image" content="https://retsurf.app/images/retsurf-rg35xx-sp.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#16171a">
@@ -23,8 +23,9 @@
   <header class="top wrap">
     <a class="brand" href="#"><img src="retsurf.svg" alt="" width="28" height="28">retsurf</a>
     <nav>
-      <a href="#features">Features</a>
-      <a href="#screens">Screenshots</a>
+      <a href="#hardware">Handhelds</a>
+      <a href="#apps">Apps and games</a>
+      <a href="#buttons">Controls</a>
       <a href="#install">Install</a>
     </nav>
   </header>
@@ -33,8 +34,8 @@
     <section class="hero">
       <div class="wrap hero-grid">
         <div class="hero-text">
-          <h1>A real web browser for <span class="accent">your handheld</span></h1>
-          <p class="lead">Wikipedia, Hacker News and itch.io games on the handheld already in your pocket, or on your desk. retsurf is built on the <a href="https://servo.org/">Servo</a> engine and driven from a gamepad or a keyboard, no mouse needed.</p>
+          <h1>Web apps and games on <span class="accent">your handheld</span></h1>
+          <p class="lead">itch.io games, Hacker News and Wikipedia, each a tile on your start page that opens as a game, an app or a site. retsurf is a real web browser built on the <strong><a href="https://servo.org/">Servo</a> engine</strong> and driven from a gamepad or a keyboard, no mouse needed.</p>
           <div class="actions">
             <a class="button primary" href="#install">Download</a>
             <a class="button" href="https://github.com/mxmgorin/retsurf">View on GitHub</a>
@@ -51,24 +52,25 @@
       </div>
     </section>
 
-    <section class="devices wrap">
-      <figure>
-        <img src="images/retsurf-rgb30.jpg" alt="retsurf start page on a Powkiddy RGB30" width="660" height="660" loading="lazy">
-        <figcaption>Powkiddy RGB30, ROCKNIX</figcaption>
-      </figure>
-      <figure>
-        <img src="images/retsurf-trimui-smart-pro.jpg" alt="retsurf start page on a TrimUI Smart Pro S" width="700" height="700" loading="lazy">
-        <figcaption>TrimUI Smart Pro S, Knulli</figcaption>
-      </figure>
-      <a class="more" href="https://github.com/mxmgorin/retsurf/discussions/78">
-        <strong>And more</strong>
-        <span>Also tested on Anbernic RG35XX SP, Miyoo Mini Flip, Retroid Pocket Flip 2 and Unihertz Titan 2.</span>
-        <span class="go">See tested devices</span>
-      </a>
-    </section>
-
-    <section id="video" class="wrap">
-      <h2>See it in action</h2>
+    <section id="hardware" class="wrap">
+      <h2>On real handhelds</h2>
+      <p class="section-lead">Runs on the firmware you already have: PortMaster, OnionOS, spruceOS, NextUI and more. From a Miyoo Mini with 128 MB of RAM and no GPU up to Android phones and desktops.</p>
+      <div class="devices">
+        <figure>
+          <img src="images/retsurf-rgb30.jpg" alt="retsurf start page on a Powkiddy RGB30" width="660" height="660" loading="lazy">
+          <figcaption>Powkiddy RGB30, ROCKNIX</figcaption>
+        </figure>
+        <figure>
+          <img src="images/retsurf-trimui-smart-pro.jpg" alt="retsurf start page on a TrimUI Smart Pro S" width="700" height="700" loading="lazy">
+          <figcaption>TrimUI Smart Pro S, Knulli</figcaption>
+        </figure>
+        <a class="more" href="https://github.com/mxmgorin/retsurf/discussions/78">
+          <strong>And more</strong>
+          <span>Also tested on Anbernic RG35XX SP, Miyoo Mini Flip, Retroid Pocket Flip 2 and Unihertz Titan 2.</span>
+          <span class="go">See tested devices</span>
+        </a>
+      </div>
+      <h3 class="sub-title">See it in action</h3>
       <div class="clips">
         <figure>
           <video src="videos/miyoo-mini-flip.mp4" poster="videos/miyoo-mini-flip.jpg" autoplay muted loop playsinline preload="metadata"></video>
@@ -85,61 +87,82 @@
       </div>
     </section>
 
-    <section id="features" class="band">
+    <section id="apps" class="band">
       <div class="wrap">
-        <h2>Built for buttons</h2>
+        <h2>Sites as apps and games</h2>
 
         <article class="spot">
           <div class="spot-text">
-            <h3>Gamepad and keyboard navigation</h3>
-            <p>A virtual cursor on the stick or D-pad, Vimium-style link hints that label every link with the buttons or keys that open it, and an on-screen keyboard as a grid or a wheel.</p>
-            <p>Every browser action can be bound to a gamepad gesture or a keyboard shortcut, in the app, with tap, hold and chord.</p>
+            <h3>Your start page is a launcher</h3>
+            <p>Every bookmark is a tile on the start page. Open it as a site, as an app without the browser around it, or as a game in game mode.</p>
+            <p>Filter by sites, apps, games or your own tags, sort by hand, by name or by last opened, and lay it out as a grid or a list in three sizes.</p>
+            <p>Every bookmark keeps its own settings, from the user agent and dark mode to game mode, and closing an app or a game takes you back to the start page.</p>
           </div>
-          <img class="spot-media" src="images/retsurf-hints.png" alt="Link hints over a Wikipedia article, each labeled with gamepad buttons" width="640" height="480" loading="lazy">
+          <img class="spot-media" src="images/retsurf-start-page.png" alt="The start page: bookmarks as site, app and game tiles under filter tabs, the search field at the bottom" width="640" height="480" loading="lazy">
         </article>
+        <div class="shots">
+          <figure><img src="images/retsurf-app-mode.jpg" alt="itch.io's HTML5 games opened as an app, with no browser toolbar" width="640" height="480" loading="lazy"><figcaption>itch.io as an app</figcaption></figure>
+          <figure><img src="images/retsurf-bookmark-options.png" alt="A bookmark's options in Quick Access: open, launch as game, rename, tags, move, remove" width="640" height="480" loading="lazy"><figcaption>Launch as site, app or game</figcaption></figure>
+          <figure><img src="images/retsurf-home-list.png" alt="The start page as a list: each bookmark with its site, launch badge and tags" width="640" height="480" loading="lazy"><figcaption>List layout with tags</figcaption></figure>
+        </div>
 
         <article class="spot">
           <div class="spot-text">
-            <h3>Game mode and web games</h3>
-            <p>Game mode hides the browser and routes input directly to the page. Input maps let you map controls to keyboard keys, mouse, or gamepad input, with an editor built in.</p>
-            <p>It can also cut the game out of the page, fit it pixel-perfectly to the screen, and apply CRT, LCD, or upscaling shaders.</p>
-            <p>Browser games from itch.io and similar sites run too, with WebGL 2, gamepad, and audio.</p>
+            <h3>Game mode</h3>
+            <p>Play browser games from itch.io and similar sites, with WebGL 2, gamepad and audio.</p>
+            <p>Game mode hides the browser and routes input directly to the page. Input maps let you map controls to keyboard keys, mouse or gamepad input, with an editor built in.</p>
+            <p>It can also cut the game out of the page, fit it pixel-perfectly to the screen and apply CRT, LCD or upscaling shaders.</p>
           </div>
           <img class="spot-media" src="images/retsurf-game-mode.png" alt="Quick Access over the WebGL racer HexGL in game mode, drawn through a CRT shader" width="640" height="480" loading="lazy">
         </article>
-
-        <article class="spot">
-          <div class="spot-text">
-            <h3>Even on the smallest handhelds</h3>
-            <p>No display server needed: SDL2 draws through whatever the firmware ships. OpenGL ES where there is a GPU, a software renderer where there is not, down to a Miyoo Mini with 128 MB of RAM.</p>
-          </div>
-          <img class="spot-media" src="images/miyoo-mini-flip-wikipedia.jpg" alt="A Miyoo Mini Flip showing Wikipedia in retsurf, held in two hands" width="1200" height="900" loading="lazy">
-        </article>
-
-        <h3 class="also-title">Also in the box</h3>
-        <ul class="also">
-          <li><strong>Reader view</strong> strips pages down to their articles, even logged-in and dynamic ones.</li>
-          <li><strong>Dark pages</strong> use sites' own dark themes, or force dark on sites that have none.</li>
-          <li><strong>Ad and tracker blocking</strong> at the network level with Brave's adblock-rust, EasyList and EasyPrivacy.</li>
-          <li><strong>Tabs, bookmarks, history and downloads</strong> in one full-screen menu; downloads run in the background.</li>
-          <li><strong>Real page zoom</strong> from 50% to 300% that reflows the layout, per tab.</li>
-          <li><strong>Audio and video</strong> for direct files and embedded players; streaming sites that need MSE are not supported yet.</li>
-          <li><strong>In-app updates</strong> from GitHub, with stable, beta and nightly channels.</li>
-          <li><strong>Written in Rust</strong> on Servo, SDL2 and egui.</li>
-        </ul>
+        <div class="shots two">
+          <figure><img src="images/retsurf-shaders.jpg" alt="HexGL split down the middle: as drawn on the left, through the crt-lottes shader on the right" width="640" height="480" loading="lazy"><figcaption>Shaders: none and crt-lottes</figcaption></figure>
+          <figure><img src="images/retsurf-input-map.png" alt="The input map editor" width="640" height="480" loading="lazy"><figcaption>Input map editor</figcaption></figure>
+        </div>
       </div>
     </section>
 
-    <section id="screens" class="wrap">
-      <h2>Screenshots</h2>
+    <section id="buttons" class="wrap">
+      <h2>Built for buttons</h2>
+      <article class="spot">
+        <div class="spot-text">
+          <h3>Gamepad and keyboard navigation</h3>
+          <p>A virtual cursor on the stick or D-pad, Vimium-style link hints that label every link with the buttons or keys that open it, and an on-screen keyboard as a grid or a wheel.</p>
+          <p>Every browser action can be bound to a gamepad gesture or a keyboard shortcut, in the app, with tap, hold and chord.</p>
+        </div>
+        <img class="spot-media" src="images/retsurf-hints.png" alt="Link hints over a Wikipedia article, each labeled with gamepad buttons" width="640" height="480" loading="lazy">
+      </article>
       <div class="shots">
-        <figure><img src="images/retsurf-start-page.png" alt="The start page: bookmarks as site, app and game tiles under filter tabs, the search field at the bottom" width="640" height="480" loading="lazy"><figcaption>Start page</figcaption></figure>
         <figure><img src="images/retsurf-keyboard.png" alt="The on-screen keyboard under the search field" width="640" height="480" loading="lazy"><figcaption>On-screen keyboard</figcaption></figure>
-        <figure><img src="images/retsurf-quick-access.png" alt="Quick Access at the right edge over Hacker News" width="640" height="480" loading="lazy"><figcaption>Quick Access</figcaption></figure>
-        <figure><img src="images/retsurf-input-map.png" alt="The input map editor" width="640" height="480" loading="lazy"><figcaption>Input maps</figcaption></figure>
-        <figure><img src="images/retsurf-reader.png" alt="A Wikipedia article in reader view" width="640" height="480" loading="lazy"><figcaption>Reader view</figcaption></figure>
-        <figure><img src="images/retsurf-controls.png" alt="The button bindings: each browser action with its gamepad and keyboard gestures" width="640" height="480" loading="lazy"><figcaption>Controls</figcaption></figure>
+        <figure><img src="images/retsurf-osk-wheel.png" alt="The wheel keyboard: letters in groups around a center, picked with the stick and typed with the face buttons" width="640" height="480" loading="lazy"><figcaption>Wheel keyboard</figcaption></figure>
+        <figure><img src="images/retsurf-controls.png" alt="The button bindings: each browser action with its gamepad and keyboard gestures" width="640" height="480" loading="lazy"><figcaption>Button bindings</figcaption></figure>
       </div>
+    </section>
+
+    <section id="reading" class="wrap">
+      <h2>Read in comfort</h2>
+      <article class="spot">
+        <div class="spot-text">
+          <h3>Made for small screens</h3>
+          <p>Reader view strips pages down to their articles, even logged-in and dynamic ones.</p>
+          <p>Dark pages use sites' own dark themes, or force dark on sites that have none. Page zoom from 50% to 300% reflows the layout, per tab.</p>
+          <p>Ads and trackers are blocked at the network level with Brave's adblock-rust, EasyList and EasyPrivacy.</p>
+        </div>
+        <img class="spot-media" src="images/retsurf-reader.png" alt="A Wikipedia article in reader view" width="640" height="480" loading="lazy">
+      </article>
+      <div class="shots two">
+        <figure><img src="images/retsurf-forced-dark.png" alt="lobste.rs forced dark" width="640" height="480" loading="lazy"><figcaption>Forced dark</figcaption></figure>
+        <figure><img src="images/retsurf-page.png" alt="Hacker News as the site draws it" width="640" height="480" loading="lazy"><figcaption>As the site draws it</figcaption></figure>
+      </div>
+
+      <h3 class="also-title">Also in the box</h3>
+      <ul class="also">
+        <li><strong>Tabs, bookmarks, history and downloads</strong> in one full-screen menu; downloads run in the background.</li>
+        <li><strong>Audio and video</strong> for direct files and embedded players; streaming sites that need MSE are not supported yet.</li>
+        <li><strong>In-app updates</strong> from GitHub, with stable, beta and nightly channels.</li>
+        <li><strong>No display server needed</strong>: SDL2 draws through whatever the firmware ships, OpenGL ES where there is a GPU and a software renderer where there is not.</li>
+        <li><strong>Written in Rust</strong> on Servo, SDL2 and egui.</li>
+      </ul>
     </section>
 
     <section id="install" class="band">
