@@ -14,21 +14,24 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#16171a">
   <link rel="icon" href="retsurf.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap">
+  <link rel="preload" href="fonts/hack-bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="horizon.css">
   <link rel="stylesheet" href="style.css">
   <script src="badges.js" defer></script>
+  <script type="module" src="hints.js"></script>
+  <script type="module" src="scroll.js"></script>
 </head>
 <body>
-  <header class="top wrap">
-    <a class="brand" href="#"><img src="retsurf.svg" alt="" width="28" height="28">retsurf</a>
-    <nav>
-      <a href="#hardware">Handhelds</a>
-      <a href="#apps">Apps and games</a>
-      <a href="#buttons">Controls</a>
-      <a href="#install">Install</a>
-    </nav>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#">ret<span class="accent">surf</span></a>
+      <nav>
+        <a href="#hardware">Handhelds</a>
+        <a href="#apps">Apps and games</a>
+        <a href="#buttons">Controls</a>
+        <a href="#install">Install</a>
+      </nav>
+    </div>
   </header>
 
   <main>
@@ -48,8 +51,16 @@
             <a class="badge" href="https://github.com/mxmgorin/retsurf/releases">downloads<b data-badge="downloads"></b></a>
           </div>
           <p class="platforms">Retro handhelds &middot; Android &middot; Windows &middot; macOS &middot; Linux</p>
+          <p class="hint-bar"><kbd>F</kbd> label every link, as in the app &middot; <kbd>Esc</kbd> cancel</p>
         </div>
         <img class="hero-photo" src="images/retsurf-rg35xx-sp.jpg" alt="retsurf on an Anbernic RG35XX SP, the on-screen keyboard raised under the address field" width="800" height="800">
+      </div>
+      <div class="horizon" aria-hidden="true">
+        <div class="sun"></div>
+        <div class="sea sea-back"></div>
+        <div class="sea sea-mid"></div>
+        <div class="sea sea-front"></div>
+        <div class="surfer"></div>
       </div>
     </section>
 

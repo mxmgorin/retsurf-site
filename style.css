@@ -1,3 +1,16 @@
+@font-face {
+  font-family: "Hack";
+  src: url("fonts/hack-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hack";
+  src: url("fonts/hack-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
   --bg: #16171a;
   --surface: #1e2024;
@@ -8,15 +21,18 @@
   --teal: #3fb8a0;
   --coral: #ff8c69;
   --radius: 14px;
+  --seam: url("images/brand/seam.svg");
+  --header-h: 64px;
   --gutter: 16px;
   --max: 1080px;
-  --display: "Space Grotesk", system-ui, sans-serif;
+  --mono: "Hack", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display: var(--mono);
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
 
 body {
   margin: 0;
@@ -28,28 +44,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Sunset glow behind the header and hero: coral high on the left, teal lower right, fading before the band. */
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 960px;
-  background:
-    radial-gradient(60% 55% at 18% 8%, rgba(255, 140, 105, 0.16), transparent 70%),
-    radial-gradient(55% 45% at 82% 55%, rgba(63, 184, 160, 0.13), transparent 70%);
-  pointer-events: none;
-}
-header, main, footer { position: relative; }
-
 a { color: var(--teal); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 img { max-width: 100%; height: auto; display: block; }
 
 code {
-  font: 0.9em ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font: 0.9em var(--mono);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -67,10 +68,10 @@ section { padding: 64px 0; }
 section.wrap { padding-top: 64px; padding-bottom: 64px; }
 
 /* Full-bleed band: alternates with the page background so sections read as separate. */
-.band { background: var(--band); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.band { background: var(--seam) top center repeat-x, var(--seam) bottom center repeat-x, var(--band); }
 
-h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.01em; }
-h1 { font-size: clamp(34px, 5.5vw, 56px); font-weight: 700; letter-spacing: -0.02em; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0 0 12px; }
+h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 700; }
 h2 { font-size: clamp(26px, 3.5vw, 36px); font-weight: 700; margin-bottom: 28px; }
 h3 { font-size: 22px; font-weight: 700; }
 
@@ -78,8 +79,9 @@ h3 { font-size: 22px; font-weight: 700; }
 
 /* Servo has no background-clip: text and would paint the gradient as a box. */
 @supports (background-clip: text) or (-webkit-background-clip: text) {
+  /* The wordmark's "surf" gradient: teal below, warming to coral at the top. */
   .accent {
-    background: linear-gradient(90deg, var(--teal), var(--coral));
+    background: linear-gradient(0deg, var(--teal) 46%, var(--coral) 67%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -88,37 +90,75 @@ h3 { font-size: 22px; font-weight: 700; }
 
 /* Header */
 
+/* Sticky, so its tabs can mark the section in view. */
 .top {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(22, 23, 26, 0.94);
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   gap: 16px;
-  padding-top: 18px;
-  padding-bottom: 18px;
+  height: var(--header-h);
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--ink);
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 19px;
-}
+/* The wordmark as text, so forced dark inverts it with the page. */
+.brand { align-self: center; color: var(--ink); font: 30px/1 var(--mono); letter-spacing: -0.02em; }
 .brand:hover { text-decoration: none; }
 
-.top nav { display: flex; gap: 22px; flex-wrap: wrap; }
-.top nav a { color: var(--dim); }
-.top nav a:hover { color: var(--ink); text-decoration: none; }
+/* Tabs as on the app's start page: the current one underlined on the header's hairline. */
+.top nav { display: flex; gap: 22px; font-family: var(--mono); font-size: 15px; }
+.top nav a {
+  display: flex;
+  align-items: center;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  color: var(--dim);
+}
+.top nav a:hover, .top nav a.current { color: var(--ink); border-bottom-color: var(--teal); text-decoration: none; }
 
 /* Hero */
 
 .hero {
+  --sun-dx: var(--sun-wide);
+  --surfer-dx: var(--surfer-wide);
   position: relative;
   padding-top: 40px;
-  padding-bottom: 72px;
+  padding-bottom: 0;
 }
+/* Sunset light, centered on the horizon's sun. */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(760px 520px at calc(50% + var(--sun-dx)) calc(100% - var(--horizon-h) + var(--sun-y)), rgba(255, 140, 105, 0.13), transparent 70%);
+  pointer-events: none;
+}
+
+/* Sun, sea and surfer, drawn and timed by horizon.css, which loads first so these rules
+   override it. Positioned to paint over the sunset light and fade it out without an edge. */
+.horizon {
+  position: relative;
+  overflow: hidden;
+  height: var(--horizon-h);
+  margin-top: 24px;
+  background: linear-gradient(transparent 55%, var(--bg));
+}
+.horizon > * { position: absolute; }
+.sun { left: calc(50% + var(--sun-dx)); }
+.sea { top: 0; bottom: 0; right: 0; }
+.surfer { left: calc(50% + var(--surfer-dx)); }
+/* Still unless marked live: in view, in an engine that can afford the frames. */
+.horizon > * { animation-play-state: paused; }
+.horizon.live > * { animation-play-state: running; }
+@media (prefers-reduced-motion: reduce) { .horizon > * { animation: none; } }
 
 .hero-grid {
   position: relative;
@@ -135,14 +175,17 @@ h3 { font-size: 22px; font-weight: 700; }
 
 .button {
   display: inline-block;
-  padding: 13px 24px;
-  border-radius: 999px;
+  padding: 12px 22px;
+  border-radius: 10px;
   border: 1px solid var(--line);
   color: var(--ink);
-  font-weight: 600;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 15px;
   background: rgba(22, 23, 26, 0.6);
 }
-.button:hover { text-decoration: none; border-color: var(--dim); }
+/* The app's selection: a teal wash ringed by solid teal. */
+.button:hover { text-decoration: none; border-color: var(--teal); background: rgba(63, 184, 160, 0.18); }
 .button.primary { background: var(--teal); border-color: var(--teal); color: var(--bg); }
 .button.primary:hover { background: #52c8b0; }
 
@@ -176,6 +219,23 @@ h3 { font-size: 22px; font-weight: 700; }
 }
 
 .platforms { color: var(--dim); font-size: 14px; margin: 12px 0 0; }
+
+/* The app's hint bar; link hints need a keyboard. */
+.hint-bar { color: var(--dim); font-size: 14px; margin: 8px 0 0; }
+@media (pointer: coarse) { .hint-bar { display: none; } }
+
+/* Link hints, drawn like the app's. */
+kbd, .hint-label {
+  font: 700 12px/18px var(--mono);
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--teal);
+  color: var(--bg);
+}
+.hints { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
+.hint-box { position: fixed; border: 1px solid var(--teal); border-radius: 4px; }
+.hint-label { position: fixed; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); }
+.hint-label i { font-style: normal; opacity: 0.45; }
 
 .hero-photo {
   border-radius: var(--radius);
@@ -244,8 +304,8 @@ figcaption { color: var(--dim); font-size: 14px; margin-top: 10px; }
 .shots + .spot { border-top: 1px solid var(--line); margin-top: 24px; }
 .shots.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .sub-title { margin-top: 48px; }
-/* Two plain sections in a row: a rule keeps them apart. */
-section.wrap + section.wrap { border-top: 1px solid var(--line); }
+/* Two plain sections in a row: a seam keeps them apart. */
+section.wrap + section.wrap { background: var(--seam) top center repeat-x; }
 .section-lead { color: var(--dim); max-width: 46em; margin: -12px 0 28px; }
 
 .also-title { margin-top: 48px; font-size: 18px; color: var(--dim); font-weight: 500; }
@@ -320,7 +380,7 @@ td .sub { display: block; color: var(--dim); font-size: 13px; }
 /* Footer */
 
 footer {
-  border-top: 1px solid var(--line);
+  background: var(--seam) top center repeat-x;
   padding-top: 24px;
   padding-bottom: 40px;
   color: var(--dim);
@@ -332,6 +392,7 @@ footer p { margin: 0 0 6px; }
 
 @media (max-width: 860px) {
   .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .hero { --sun-dx: var(--sun-narrow); --surfer-dx: var(--surfer-narrow); }
   .spot { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .spot:nth-of-type(even) .spot-media { order: 0; }
   .links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -341,7 +402,7 @@ footer p { margin: 0 0 6px; }
 @media (max-width: 560px) {
   section, section.wrap { padding-top: 44px; padding-bottom: 44px; }
   .hero { padding-top: 16px; }
-  .top nav { gap: 14px; font-size: 15px; }
+  .top nav { gap: 14px; }
   .top nav a:not([href="#install"]) { display: none; }
   .devices, .shots, .shots.two, .clips, .links, .also { grid-template-columns: minmax(0, 1fr); }
 }
