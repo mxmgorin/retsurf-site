@@ -27,16 +27,16 @@ CSS = os.path.join(SITE, "brand.css")
 
 SAND = "#e6dccb"
 
-# The app's colors the site shares: CSS property to the theme's constant.
+# The app's colors the site shares: CSS property to the field of the theme's Night palette.
 PALETTE = {
-    "bg": "BG",
-    "surface": "SURFACE",
-    "line": "BORDER",
-    "keycap": "HAIRLINE",
-    "ink": "INK",
-    "dim": "MUTED",
-    "teal": "ACCENT",
-    "coral": "SURF_WARM",
+    "bg": "bg",
+    "surface": "surface",
+    "line": "border",
+    "keycap": "hairline",
+    "ink": "ink",
+    "dim": "muted",
+    "teal": "accent",
+    "coral": "surf_warm",
 }
 # Those the site also draws translucent: they get an `-rgb` property of bare channels.
 TRANSLUCENT = ["bg", "teal", "coral"]
@@ -107,9 +107,10 @@ def polyline(f, x0, x1, step):
 
 
 def palette(theme):
-    """Reads the theme's opaque Color32 constants; returns each one's (r, g, b) by name."""
+    """Reads the theme's Night palette; returns each opaque field's (r, g, b) by name."""
+    night = re.search(r"const NIGHT: Palette = Palette \{(.*?)\};", theme, re.S).group(1)
     colors = {}
-    for name, args in re.findall(r"pub const (\w+): egui::Color32 = egui::Color32::from_(?:rgb|gray)\(([^)]*)\);", theme):
+    for name, args in re.findall(r"(\w+): egui::Color32::from_(?:rgb|gray)\(([^)]*)\),", night):
         channels = [int(x, 16) for x in re.findall(r"0x([0-9a-fA-F]{2})", args)]
         colors[name] = tuple(channels * 3 if len(channels) == 1 else channels)
     return colors
