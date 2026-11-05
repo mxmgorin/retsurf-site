@@ -10,16 +10,21 @@
   <meta property="og:url" content="https://retsurf.app/">
   <meta property="og:title" content="retsurf - web browser on your handheld">
   <meta property="og:description" content="Sites as apps and games on retro handhelds, Android and desktop. A real web browser built on Servo, driven from a gamepad or a keyboard.">
-  <meta property="og:image" content="https://retsurf.app/images/retsurf-rg35xx-sp.jpg">
+  <meta property="og:image" content="https://retsurf.app/images/retsurf-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="retsurf: web browser on your handheld, over a sunset sea with the surfing mascot">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#16171a">
   <link rel="icon" href="retsurf.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/hack-bold.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="horizon.css">
+  <link rel="stylesheet" href="brand.css">
   <link rel="stylesheet" href="style.css">
   <script src="badges.js" defer></script>
   <script type="module" src="hints.js"></script>
   <script type="module" src="scroll.js"></script>
+  <script type="module" src="pad.js"></script>
+  <script type="module" src="compare.js"></script>
 </head>
 <body>
   <header class="top">
@@ -41,8 +46,8 @@
           <h1>Web browser on <span class="accent">your handheld</span></h1>
           <p class="lead">itch.io games, Hacker News and Wikipedia, each a tile on your start page that opens as a game, an app or a site. retsurf is a real web browser built on the <strong><a href="https://servo.org/">Servo</a> engine</strong> and driven from a gamepad or a keyboard, no mouse needed.</p>
           <div class="actions">
-            <a class="button primary" href="#install">Download</a>
-            <a class="button" href="https://github.com/mxmgorin/retsurf">View on GitHub</a>
+            <a class="button primary" href="#install" data-pad="a"><kbd>A</kbd>Download</a>
+            <a class="button" href="https://github.com/mxmgorin/retsurf" data-pad="y"><kbd>Y</kbd>View on GitHub</a>
           </div>
           <div class="trust">
             <a class="badge" href="https://github.com/mxmgorin/retsurf/releases/latest">release<b data-badge="release"></b></a>
@@ -51,7 +56,7 @@
             <a class="badge" href="https://github.com/mxmgorin/retsurf/releases">downloads<b data-badge="downloads"></b></a>
           </div>
           <p class="platforms">Retro handhelds &middot; Android &middot; Windows &middot; macOS &middot; Linux</p>
-          <p class="hint-bar"><kbd>F</kbd> label every link, as in the app &middot; <kbd>Esc</kbd> cancel</p>
+          <p class="hint-bar"><span><kbd>F</kbd>link hints</span><span><kbd>Esc</kbd>cancel</span></p>
         </div>
         <img class="hero-photo" src="images/retsurf-rg35xx-sp.jpg" alt="retsurf on an Anbernic RG35XX SP, the on-screen keyboard raised under the address field" width="800" height="800">
       </div>
@@ -128,7 +133,14 @@
           <img class="spot-media" src="images/retsurf-game-mode.png" alt="Quick Access over the WebGL racer HexGL in game mode, drawn through a CRT shader" width="640" height="480" loading="lazy">
         </article>
         <div class="shots two">
-          <figure><img src="images/retsurf-shaders.jpg" alt="HexGL split down the middle: as drawn on the left, through the crt-lottes shader on the right" width="640" height="480" loading="lazy"><figcaption>Shaders: none and crt-lottes</figcaption></figure>
+          <figure>
+            <div class="compare" tabindex="0" role="slider" aria-label="Shader comparison: share of the frame drawn without a shader" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+              <img src="images/retsurf-shader-crt-lottes.jpg" alt="The HexGL menu through the crt-lottes shader: a curved screen with scanlines" width="640" height="480" loading="lazy">
+              <div class="compare-before"><img src="images/retsurf-shader-none.jpg" alt="The HexGL menu as drawn, without a shader" width="640" height="480" loading="lazy"></div>
+              <span class="compare-handle"></span>
+            </div>
+            <figcaption>Shaders: none and crt-lottes, drag to compare</figcaption>
+          </figure>
           <figure><img src="images/retsurf-input-map.png" alt="The input map editor" width="640" height="480" loading="lazy"><figcaption>Input map editor</figcaption></figure>
         </div>
       </div>
@@ -169,15 +181,15 @@
 
       <h3 class="also-title">Also in the box</h3>
       <ul class="also">
-        <li><strong>Tabs, bookmarks, history and downloads</strong> in one full-screen menu; downloads run in the background.</li>
-        <li><strong>Audio and video</strong> for direct files and embedded players; streaming sites that need MSE are not supported yet.</li>
-        <li><strong>In-app updates</strong> from GitHub, with stable, beta and nightly channels.</li>
-        <li><strong>No display server needed</strong>: SDL2 draws through whatever the firmware ships, OpenGL ES where there is a GPU and a software renderer where there is not.</li>
-        <li><strong>Written in Rust</strong> on Servo, SDL2 and egui.</li>
+        <li><strong>Tabs, bookmarks, history and downloads</strong><span>In one full-screen menu; downloads run in the background.</span><code>one menu</code></li>
+        <li><strong>Audio and video</strong><span>For direct files and embedded players; streaming sites that need MSE are not supported yet.</span><code>H.264 MP4</code></li>
+        <li><strong>In-app updates</strong><span>From GitHub, with stable, beta and nightly channels.</span><code>stable &middot; beta &middot; nightly</code></li>
+        <li><strong>No display server needed</strong><span>SDL2 draws through whatever the firmware ships, OpenGL ES where there is a GPU and a software renderer where there is not.</span><code>GLES &middot; software</code></li>
+        <li><strong>Written in Rust</strong><span>On Servo, SDL2 and egui.</span><code>Servo &middot; SDL2 &middot; egui</code></li>
       </ul>
     </section>
 
-    <section id="install" class="band">
+    <section id="install" class="band sand">
       <div class="wrap">
         <h2>Install</h2>
         <p>Pick the package for your system. All builds, including nightlies, are on <a href="https://github.com/mxmgorin/retsurf/releases">GitHub Releases</a> and only there; <code>gh attestation verify FILE --repo mxmgorin/retsurf</code> confirms a file came from there.</p>

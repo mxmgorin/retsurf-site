@@ -16,6 +16,7 @@
   --surface: #1e2024;
   --band: #1a1b1f;
   --line: #2c2f35;
+  --keycap: #4a4e56;
   --ink: #ececea;
   --dim: #9a9fa8;
   --teal: #3fb8a0;
@@ -142,7 +143,7 @@ h3 { font-size: 22px; font-weight: 700; }
   pointer-events: none;
 }
 
-/* Sun, sea and surfer, drawn and timed by horizon.css, which loads first so these rules
+/* Sun, sea and surfer, drawn and timed by brand.css, which loads first so these rules
    override it. Positioned to paint over the sunset light and fade it out without an edge. */
 .horizon {
   position: relative;
@@ -188,6 +189,9 @@ h3 { font-size: 22px; font-weight: 700; }
 .button:hover { text-decoration: none; border-color: var(--teal); background: rgba(63, 184, 160, 0.18); }
 .button.primary { background: var(--teal); border-color: var(--teal); color: var(--bg); }
 .button.primary:hover { background: #52c8b0; }
+/* The pad button that presses it, labelled as the app labels its actions. */
+.button kbd { margin-right: 10px; }
+.button.primary kbd { background: var(--bg); color: var(--teal); }
 
 .trust {
   display: flex;
@@ -220,8 +224,20 @@ h3 { font-size: 22px; font-weight: 700; }
 
 .platforms { color: var(--dim); font-size: 14px; margin: 12px 0 0; }
 
-/* The app's hint bar; link hints need a keyboard. */
-.hint-bar { color: var(--dim); font-size: 14px; margin: 8px 0 0; }
+/* The app's hint bar: key and action, dot-separated; link hints need a keyboard. */
+.hint-bar { color: var(--dim); font-size: 14px; margin: 12px 0 0; }
+.hint-bar span + span::before { content: "\00B7"; margin: 0 12px; }
+/* Keyboard keys as keycaps, apart from the pad's filled buttons. */
+.hint-bar kbd {
+  display: inline-block;
+  min-width: 20px;
+  margin-right: 6px;
+  border: 1px solid var(--keycap);
+  border-bottom-width: 2px;
+  background: none;
+  color: var(--ink);
+  text-align: center;
+}
 @media (pointer: coarse) { .hint-bar { display: none; } }
 
 /* Link hints, drawn like the app's. */
@@ -281,6 +297,38 @@ figcaption { color: var(--dim); font-size: 14px; margin-top: 10px; }
   background: var(--surface);
 }
 
+/* Sparing frames, a clip waits behind a play button. */
+.clips figure { position: relative; }
+/* Padding sizes it to the clip's 4:3: Servo ignores aspect-ratio on a positioned box. */
+.play {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  padding: 0 0 75%;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(22, 23, 26, 0.35);
+  cursor: pointer;
+}
+.play::before {
+  content: "\25B6";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  padding-left: 4px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: var(--bg);
+  font: 22px/56px var(--mono);
+  text-align: center;
+}
+.playing .play { display: none; }
+
 /* Feature spotlights */
 
 .spot {
@@ -308,29 +356,49 @@ figcaption { color: var(--dim); font-size: 14px; margin-top: 10px; }
 section.wrap + section.wrap { background: var(--seam) top center repeat-x; }
 .section-lead { color: var(--dim); max-width: 46em; margin: -12px 0 28px; }
 
-.also-title { margin-top: 48px; font-size: 18px; color: var(--dim); font-weight: 500; }
+/* Like the app's Controls screen: a teal section label over rows, each a name with its
+   value in teal on the right. */
+.also-title { margin: 48px 0 10px; font: 400 15px var(--mono); color: var(--teal); }
 .also {
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 40px;
-  color: var(--dim);
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
   font-size: 15px;
 }
-.also li { padding-left: 18px; position: relative; }
+.also li {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 24px;
+  padding: 10px 14px 10px 34px;
+}
+.also li + li { border-top: 1px solid var(--line); }
 .also li::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0.65em;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--teal);
+  left: 14px;
+  top: 17px;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: rotate(-45deg);
 }
-.also strong { color: var(--ink); font-weight: 600; }
+.also strong { color: var(--ink); font-weight: 500; }
+.also span { grid-column: 1; color: var(--dim); font-size: 14px; }
+.also code {
+  grid-column: 2;
+  grid-row: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--teal);
+  font-size: 14px;
+  white-space: nowrap;
+}
 
 /* Screenshots */
 
@@ -341,7 +409,63 @@ section.wrap + section.wrap { background: var(--seam) top center repeat-x; }
 }
 .shots img, .clips video { border: 1px solid var(--line); border-radius: 10px; }
 
+/* Shader comparison: the unfiltered frame over the filtered one, cut at --split. */
+.compare {
+  --split: 50%;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+}
+.shots .compare img { border: 0; border-radius: 0; }
+.compare-before { position: absolute; top: 0; bottom: 0; left: 0; width: var(--split); overflow: hidden; }
+/* As tall as the frame, so exactly as wide as the one under it. */
+.compare-before img { height: 100%; width: auto; max-width: none; }
+.compare-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--teal);
+}
+.compare-handle::after {
+  content: "\25C0\25B6";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: var(--bg);
+  font: 10px/34px var(--mono);
+  text-align: center;
+}
+.compare:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
 /* Install */
+
+/* The beach: sand between two shorelines, in a palette the components inside pick up. */
+.band.sand {
+  --bg: #f1eadf;
+  --surface: #e0d5c2;
+  --line: #cfc2ab;
+  --ink: #16171a;
+  --dim: #5c5f66;
+  --teal: #196657;
+  position: relative;
+  color: var(--ink);
+  background: var(--sand);
+}
+.sand::before, .sand::after { content: ""; position: absolute; left: 0; right: 0; height: var(--shore-h); }
+.sand::before { bottom: 100%; }
+.sand::after { top: 100%; }
 
 .table-wrap {
   overflow-x: auto;
@@ -404,5 +528,6 @@ footer p { margin: 0 0 6px; }
   .hero { padding-top: 16px; }
   .top nav { gap: 14px; }
   .top nav a:not([href="#install"]) { display: none; }
-  .devices, .shots, .shots.two, .clips, .links, .also { grid-template-columns: minmax(0, 1fr); }
+  .devices, .shots, .shots.two, .clips, .links, .also li { grid-template-columns: minmax(0, 1fr); }
+  .also code { grid-column: 1; grid-row: auto; margin-top: 4px; }
 }
