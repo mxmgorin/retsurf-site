@@ -94,3 +94,11 @@
   97.22% { transform: translateY(-5.08px) rotate(-10.66deg); }
   100.00% { transform: translateY(-3.48px) rotate(-10.34deg); }
 }
+
+.board { background-image: url("images/brand/board.svg"); }
+/* The front wave meets a point behind the surfer this much sooner. */
+.legs {
+  margin-left: -99.9px;
+  background-image: url("images/brand/legs.svg");
+  animation-delay: -2.512s;
+}

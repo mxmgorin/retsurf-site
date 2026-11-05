@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Draws the site's brand art from the app's banner: the seam, the shorelines of the sand
-band, and the hero's horizon as layers (sun, three sea tiles, surfer), with brand.css that
-places and animates them.
+band, and the hero's horizon as layers (sun, three sea tiles, surfer, and the 404 page's
+wipeout), with brand.css that places and animates them.
 
     tools/brand.py [BANNER_SVG]    # default: ../retsurf/resources/retsurf-banner-bare.svg
 
@@ -59,6 +59,13 @@ SURFER_FRAMES = 36
 # The mascot's box in its own units: its origin sits under the board's center.
 MASCOT_BOX = (-15, -29, 32, 29)
 BOARD_BOTTOM = -1.4
+
+# Wipeout: the board drifts on alone, tossed by this tilt, and the mascot's legs stick out
+# of the water this far behind it. Below the box's bottom is under water: the box cuts it.
+WIPEOUT_TILT = -18
+WIPEOUT_GAP = 60
+# Flips the mascot head down: its hips and the edge of its body clear the waterline.
+LEGS_UP = "translate(0 -17.5) rotate(180) rotate(-12 0 -12.7)"
 
 SEAM_PERIOD, SEAM_HEIGHT, SEAM_AMP = 96, 10, 2.5
 
@@ -163,9 +170,12 @@ def main():
 
     mascot = re.search(r'<g transform="translate\([\d. ]+\) rotate\([\d.]+\) scale\([\d.]+\)">(.*)</g>\s*</svg>', banner, re.S).group(1)
     bx, by, bw, bh = MASCOT_BOX
-    write(os.path.join(ART, "surfer.svg"),
-          f'<svg xmlns="http://www.w3.org/2000/svg" width="{bw * SURFER_SCALE:.1f}" height="{bh * SURFER_SCALE:.1f}" '
-          f'viewBox="{bx} {by} {bw} {bh}">{mascot}</svg>\n')
+    box = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{bw * SURFER_SCALE:.1f}" height="{bh * SURFER_SCALE:.1f}" '
+           f'viewBox="{bx} {by} {bw} {bh}">')
+    write(os.path.join(ART, "surfer.svg"), f"{box}{mascot}</svg>\n")
+    board, body = re.match(r"\s*(<ellipse[^>]*/>)(.*)", mascot, re.S).groups()
+    write(os.path.join(ART, "board.svg"), f'{box}<g transform="rotate({WIPEOUT_TILT} 0 -3.2)">{board}</g></svg>\n')
+    write(os.path.join(ART, "legs.svg"), f'{box}<g transform="{LEGS_UP}">{body}</g></svg>\n')
 
     _, fy, fstroke, _, ftile, fseconds, fparts = WAVES[-1]
     rest = fy - fstroke / 2 + SURFER_SINK - BOARD_BOTTOM * SURFER_SCALE
@@ -190,6 +200,14 @@ def main():
 }}
 @keyframes surf {{
 {frames}
+}}
+
+.board {{ background-image: url("images/brand/board.svg"); }}
+/* The front wave meets a point behind the surfer this much sooner. */
+.legs {{
+  margin-left: {bx * SURFER_SCALE - WIPEOUT_GAP:.1f}px;
+  background-image: url("images/brand/legs.svg");
+  animation-delay: -{fseconds * WIPEOUT_GAP / ftile:.3f}s;
 }}
 ''')
     write(CSS, "".join(css))

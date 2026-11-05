@@ -270,6 +270,13 @@ kbd, .hint-label {
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
 }
 
+/* Not found: the hero alone, its horizon at the bottom of the screen. */
+.lost { display: flex; flex-direction: column; min-height: calc(100vh - var(--header-h)); }
+.lost .wrap { width: 100%; }
+.lost .horizon { margin-top: auto; }
+.lost .code { margin: 0 0 4px; font: 700 clamp(64px, 12vw, 120px)/1 var(--mono); }
+.lost .lead { margin-top: 12px; }
+
 /* Device photos */
 
 .devices {
@@ -539,7 +546,7 @@ footer p { margin: 0 0 6px; }
   section, section.wrap { padding-top: 44px; padding-bottom: 44px; }
   .hero { padding-top: 16px; }
   .top nav { gap: 14px; }
-  .top nav a:not([href="#install"]) { display: none; }
+  .top nav a:not([href$="#install"]) { display: none; }
   .devices, .shots, .shots.two, .clips, .links, .also li { grid-template-columns: minmax(0, 1fr); }
   .also code { grid-column: 1; grid-row: auto; margin-top: 4px; }
 }
