@@ -463,14 +463,8 @@ section.wrap + section.wrap { background: var(--seam) top center repeat-x; }
 
 /* Install */
 
-/* The beach: sand between two shorelines, in a palette the components inside pick up. */
+/* The beach: sand between two shorelines; brand.css gives it the app's Sand palette. */
 .band.sand {
-  --bg: #f1eadf;
-  --surface: #e0d5c2;
-  --line: #cfc2ab;
-  --ink: #16171a;
-  --dim: #5c5f66;
-  --teal: #196657;
   position: relative;
   color: var(--ink);
   background: var(--sand);

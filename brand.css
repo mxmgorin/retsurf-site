@@ -20,6 +20,16 @@
   --sand: #e6dccb;
   --shore-h: 20px;
 }
+
+/* The app's Sand palette, for the components inside the sand band. */
+.band.sand {
+  --bg: #f1eadf;
+  --surface: #ddd2be;
+  --line: #cfc2ab;
+  --ink: #16171a;
+  --dim: #5c5f66;
+  --teal: #196657;
+}
 .sand::before { background: url("images/brand/shore-top.svg") 0 100% repeat-x; }
 .sand::after { background: url("images/brand/shore-bottom.svg") 0 0 repeat-x; }
 
