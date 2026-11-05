@@ -23,16 +23,9 @@
   font-display: swap;
 }
 
+/* The app's palette comes from brand.css; these colors are the site's own. */
 :root {
-  --bg: #16171a;
-  --surface: #1e2024;
   --band: #1a1b1f;
-  --line: #2c2f35;
-  --keycap: #4a4e56;
-  --ink: #ececea;
-  --dim: #9a9fa8;
-  --teal: #3fb8a0;
-  --coral: #ff8c69;
   --radius: 14px;
   --seam: url("images/brand/seam.svg");
   --header-h: 64px;
@@ -108,7 +101,7 @@ h3 { font-size: 22px; font-weight: 700; }
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(22, 23, 26, 0.94);
+  background: rgba(var(--bg-rgb), 0.94);
   border-bottom: 1px solid var(--line);
 }
 .top .wrap {
@@ -151,7 +144,7 @@ h3 { font-size: 22px; font-weight: 700; }
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(760px 520px at calc(50% + var(--sun-dx)) calc(100% - var(--horizon-h) + var(--sun-y)), rgba(255, 140, 105, 0.13), transparent 70%);
+  background: radial-gradient(760px 520px at calc(50% + var(--sun-dx)) calc(100% - var(--horizon-h) + var(--sun-y)), rgba(var(--coral-rgb), 0.13), transparent 70%);
   pointer-events: none;
 }
 
@@ -195,12 +188,12 @@ h3 { font-size: 22px; font-weight: 700; }
   font-family: var(--mono);
   font-weight: 700;
   font-size: 15px;
-  background: rgba(22, 23, 26, 0.6);
+  background: rgba(var(--bg-rgb), 0.6);
 }
 /* The app's selection: a teal wash ringed by solid teal. */
-.button:hover { text-decoration: none; border-color: var(--teal); background: rgba(63, 184, 160, 0.18); }
+.button:hover { text-decoration: none; border-color: var(--teal); background: rgba(var(--teal-rgb), 0.18); }
 .button.primary { background: var(--teal); border-color: var(--teal); color: var(--bg); }
-.button.primary:hover { background: #52c8b0; }
+.button.primary:hover { background: var(--teal-hover); }
 /* The pad button that presses it, labelled as the app labels its actions. */
 .button kbd { margin-right: 10px; }
 .button.primary kbd { background: var(--bg); color: var(--teal); }
@@ -328,7 +321,7 @@ figcaption { color: var(--dim); font-size: 14px; margin-top: 10px; }
   padding: 0 0 75%;
   border: 0;
   border-radius: 10px;
-  background: rgba(22, 23, 26, 0.35);
+  background: rgba(var(--bg-rgb), 0.35);
   cursor: pointer;
 }
 .play::before {
