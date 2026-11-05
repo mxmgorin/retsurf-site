@@ -25,7 +25,7 @@ jobs:
         with:
           path: site
       - name: Assemble
-        run: rsync -a --exclude=.git --exclude=.github --exclude=README.md site/ _site/
+        run: rsync -a --exclude=.git --exclude=.github --exclude=README.md --exclude=tools site/ _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
