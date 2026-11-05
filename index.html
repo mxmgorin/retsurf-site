@@ -15,10 +15,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="retsurf: web browser on your handheld, over a sunset sea with the surfing mascot">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#16171a">
+  <meta name="theme-color" content="#1c161f">
   <link rel="icon" href="retsurf.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/IBMPlexSans-Regular-Latin1.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/hack-bold.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Before the styles: a theme picked on an earlier visit paints from the first frame. -->
+  <script>try { const theme = localStorage.getItem("theme"); if (theme) document.documentElement.dataset.theme = theme; } catch {}</script>
   <link rel="stylesheet" href="brand.css">
   <link rel="stylesheet" href="style.css">
   <script src="badges.js" defer></script>
@@ -26,6 +28,7 @@
   <script type="module" src="scroll.js"></script>
   <script type="module" src="pad.js"></script>
   <script type="module" src="compare.js"></script>
+  <script type="module" src="themes.js"></script>
 </head>
 <body>
   <header class="top">
@@ -37,6 +40,17 @@
         <a href="#buttons">Controls</a>
         <a href="#install">Install</a>
       </nav>
+      <div class="theme-menu" hidden>
+        <button type="button" class="theme-toggle" aria-haspopup="true" aria-expanded="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-name">Theme</span></button>
+        <div class="themes" role="menu" hidden>
+          <button type="button" role="menuitemradio" data-theme-pick="">Auto</button>
+          <button type="button" role="menuitemradio" data-theme-pick="night">Night</button>
+          <button type="button" role="menuitemradio" data-theme-pick="oled">OLED</button>
+          <button type="button" role="menuitemradio" data-theme-pick="dusk">Dusk</button>
+          <button type="button" role="menuitemradio" data-theme-pick="sand">Sand</button>
+          <button type="button" role="menuitemradio" data-theme-pick="dmg">DMG</button>
+        </div>
+      </div>
     </div>
   </header>
 

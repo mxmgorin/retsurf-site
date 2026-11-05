@@ -2,10 +2,15 @@
 """Draws the site's brand art from the app's banner: the seam, the shorelines of the sand
 band, and the hero's horizon as layers (sun, three sea tiles, surfer, and the 404 page's
 wipeout), with brand.css that places and animates them. brand.css also carries the app's
-palettes, read from its theme: Night for the page, Sand for the sand band, so the site
-and the app share one set of colors.
+themes, read from its palettes, so the site and the app share one set of colors.
 
     tools/brand.py [APP_DIR]    # default: ../retsurf
+
+Each theme is a block of custom properties on `[data-theme]`: its colors, the sand band's,
+the sun's height and its own copy of the art, recolored the way the app recolors its
+banner (Night's colors swapped for the theme's) under images/brand/<theme>/. Dusk, the
+app's default, is also the bare `:root`, and Sand stands in for it when the system asks
+for light.
 
 Each sea layer is one tile wide and scrolls right by exactly one tile per cycle, so it
 loops without a seam. The surfer stays put and rides the front wave: its keyframes sample
@@ -26,7 +31,14 @@ THEME = os.path.join("src", "ui", "theme.rs")
 ART = os.path.join(SITE, "images", "brand")
 CSS = os.path.join(SITE, "brand.css")
 
-# The app's colors the site shares: CSS property to the field of the theme's Night palette.
+# The app's palettes, by their constants in its theme; the lowercase name is the
+# theme's id, as the app spells it in its config.
+THEMES = ["NIGHT", "OLED", "DUSK", "SAND", "DMG"]
+# The art is drawn in SOURCE's colors and lives at images/brand/ itself, as the app's
+# brand SVGs are drawn in Night's; DEFAULT is the page without a picked theme.
+SOURCE, DEFAULT, AUTO_LIGHT = "NIGHT", "DUSK", "SAND"
+
+# The app's colors the site shares: CSS property to the field of a palette.
 PALETTE = {
     "bg": "bg",
     "surface": "surface",
@@ -37,7 +49,8 @@ PALETTE = {
     "teal": "accent",
     "coral": "surf_warm",
 }
-# The sand band's colors: CSS property to the field of the theme's Sand palette.
+# The sand band's colors: CSS property to the field of the Sand palette under a dark
+# theme; a light theme draws the band in its own colors, from LIGHT_BAND.
 SAND_PALETTE = {
     "bg": "surface",
     "surface": "key",
@@ -46,6 +59,16 @@ SAND_PALETTE = {
     "dim": "muted",
     "teal": "accent",
 }
+LIGHT_BAND = {
+    "bg": "field",
+    "surface": "key",
+    "line": "border",
+    "ink": "ink",
+    "dim": "muted",
+    "teal": "accent",
+}
+# Swapped for the theme's own in every SVG, as the app does in its banner.
+RECOLORED = ["bg", "ink", "accent", "surf_warm", "deep_teal", "sun_top", "wave_mid", "border"]
 # Those the site also draws translucent: they get an `-rgb` property of bare channels.
 TRANSLUCENT = ["bg", "teal", "coral"]
 # The primary button's hover: the accent mixed this far toward white.
@@ -114,14 +137,53 @@ def polyline(f, x0, x1, step):
     return "M" + " L".join(f"{x} {f(x):.2f}" for x in range(x0, x1 + 1, step))
 
 
-def palette(theme, name):
-    """Reads the theme's palette `name`; returns each opaque field's (r, g, b) by name."""
-    body = re.search(rf"const {name}: Palette = Palette \{{(.*?)\n\}};", theme, re.S).group(1)
-    colors = {}
-    for name, args in re.findall(r"(\w+): (?:egui::Color32::from_)?(?:rgb|gray)\(([^)]*)\),", body):
-        channels = [int(x, 16) for x in re.findall(r"0x([0-9a-fA-F]{2})", args)]
-        colors[name] = tuple(channels * 3 if len(channels) == 1 else channels)
-    return colors
+def palettes(theme):
+    """Reads the theme's palettes; returns each one's opaque colors as (r, g, b), its
+    `sun_drop` and `light`, by field, under the palette's constant."""
+    out = {}
+    for name in THEMES:
+        body = re.search(rf"const {name}: Palette = Palette \{{(.*?)\n\}};", theme, re.S).group(1)
+        base = re.search(r"\.\.(\w+)\s*$", body)
+        fields = dict(out[base.group(1)]) if base else {}
+        for field, args in re.findall(r"(\w+): (?:egui::Color32::from_)?(?:rgb|gray)\(([^)]*)\),", body):
+            channels = [int(x, 16) for x in re.findall(r"0x([0-9a-fA-F]{2})", args)]
+            fields[field] = tuple(channels * 3 if len(channels) == 1 else channels)
+        for field, named in re.findall(r"(\w+): egui::Color32::(BLACK|WHITE),", body):
+            fields[field] = (0, 0, 0) if named == "BLACK" else (255, 255, 255)
+        for field, value in re.findall(r"(sun_drop): (-?[\d.]+),", body):
+            fields[field] = float(value)
+        for field, value in re.findall(r"(light): (true|false),", body):
+            fields[field] = value == "true"
+        out[name] = fields
+    return out
+
+
+def recolor(svg, swaps):
+    """`svg` with each `#rrggbb` in `swaps` replaced, in one pass."""
+    return re.sub(r"#[0-9a-f]{6}", lambda m: swaps.get(m.group(0), m.group(0)), svg)
+
+
+def sun_svg(drop, colors):
+    """The icon's striped sun in its halo, `drop` diameters below its Night height and
+    cut flat at the horizon; returns the SVG, its top and its height in the strip."""
+    c = HALO_R
+    center = SUN_Y + drop * 2 * R
+    cut = min(2 * c, c + HORIZON - center)
+    stripes = "".join(
+        f'<rect y="{c + (y - ICON_SUN_Y) / ICON_SUN_R * R:.2f}" width="{2 * c}" height="{h / ICON_SUN_R * R:.2f}"/>'
+        for y, h in ICON_STRIPES)
+    teal, coral, top = colors
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{2 * c:g}" height="{cut:.1f}">
+  <defs>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{top}"/><stop offset="0.3" stop-color="{coral}"/><stop offset="1" stop-color="{teal}"/></linearGradient>
+    <radialGradient id="halo"><stop offset="0.62" stop-color="{coral}" stop-opacity="0.22"/><stop offset="1" stop-color="{coral}" stop-opacity="0"/></radialGradient>
+    <mask id="stripes"><rect width="{2 * c}" height="{2 * c}" fill="#fff"/><g fill="#000">{stripes}</g></mask>
+  </defs>
+  <circle cx="{c}" cy="{c}" r="{c}" fill="url(#halo)"/>
+  <circle cx="{c}" cy="{c}" r="{R}" fill="url(#sun)" mask="url(#stripes)"/>
+</svg>
+'''
+    return svg, center - c, cut
 
 
 def hex_color(rgb):
@@ -136,69 +198,41 @@ def write(name, text):
 def main():
     app = sys.argv[1] if len(sys.argv) > 1 else APP
     banner = open(os.path.join(app, BANNER)).read()
-    theme = open(os.path.join(app, THEME)).read()
-    night, sand = palette(theme, "NIGHT"), palette(theme, "SAND")
-    shared = {prop: night[field] for prop, field in PALETTE.items()}
-    SAND = hex_color(sand["bg"])
-    TEAL, CORAL, LINE = (hex_color(shared[p]) for p in ("teal", "coral", "line"))
-    hover = tuple(round(c + (255 - c) * HOVER_LIGHTEN) for c in shared["teal"])
-    os.makedirs(ART, exist_ok=True)
+    pals = palettes(open(os.path.join(app, THEME)).read())
+    night, sand = pals[SOURCE], pals["SAND"]
+    TEAL, CORAL, LINE, SAND = (hex_color(c) for c in (night["accent"], night["surf_warm"], night["border"], sand["bg"]))
 
+    # Night's art, in Night's colors; every other theme recolors it.
+    art = {}
     seam = polyline(lambda x: SEAM_HEIGHT / 2 + SEAM_AMP * math.sin(2 * math.pi * x / SEAM_PERIOD), -4, SEAM_PERIOD + 4, 2)
-    write(os.path.join(ART, "seam.svg"),
-          f'<svg xmlns="http://www.w3.org/2000/svg" width="{SEAM_PERIOD}" height="{SEAM_HEIGHT}">'
-          f'<path d="{seam}" fill="none" stroke="{LINE}" stroke-width="1.5"/></svg>\n')
+    art["seam"] = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{SEAM_PERIOD}" height="{SEAM_HEIGHT}">'
+                   f'<path d="{seam}" fill="none" stroke="{LINE}" stroke-width="1.5"/></svg>\n')
 
     # Shorelines: sand below the edge on the top one, above it on the bottom one.
     edge = lambda x: SHORE_HEIGHT / 2 + wave(x, SHORE_TILE, SHORE_PARTS)
     line = polyline(edge, -6, SHORE_TILE + 6, 2)
     svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="{SHORE_TILE}" height="{SHORE_HEIGHT}">'
-    write(os.path.join(ART, "shore-top.svg"),
-          f'{svg}<path d="{line} V{SHORE_HEIGHT} H-6Z" fill="{SAND}"/>'
-          f'<path d="{line}" fill="none" stroke="{TEAL}" stroke-width="{FOAM}"/></svg>\n')
-    write(os.path.join(ART, "shore-bottom.svg"), f'{svg}<path d="{line} V0 H-6Z" fill="{SAND}"/></svg>\n')
+    art["shore-top"] = (f'{svg}<path d="{line} V{SHORE_HEIGHT} H-6Z" fill="{SAND}"/>'
+                        f'<path d="{line}" fill="none" stroke="{TEAL}" stroke-width="{FOAM}"/></svg>\n')
+    art["shore-bottom"] = f'{svg}<path d="{line} V0 H-6Z" fill="{SAND}"/></svg>\n'
 
-    # Sun: the icon's striped disc in its halo, cut flat at the horizon.
-    c = HALO_R
-    cut = c + HORIZON - SUN_Y
-    stripes = "".join(
-        f'<rect y="{c + (y - ICON_SUN_Y) / ICON_SUN_R * R:.2f}" width="{2 * c}" height="{h / ICON_SUN_R * R:.2f}"/>'
-        for y, h in ICON_STRIPES)
-    write(os.path.join(ART, "sun.svg"), f'''<svg xmlns="http://www.w3.org/2000/svg" width="{2 * c:g}" height="{cut:.1f}">
-  <defs>
-    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb870"/><stop offset="0.3" stop-color="{CORAL}"/><stop offset="1" stop-color="{TEAL}"/></linearGradient>
-    <radialGradient id="halo"><stop offset="0.62" stop-color="{CORAL}" stop-opacity="0.22"/><stop offset="1" stop-color="{CORAL}" stop-opacity="0"/></radialGradient>
-    <mask id="stripes"><rect width="{2 * c}" height="{2 * c}" fill="#fff"/><g fill="#000">{stripes}</g></mask>
-  </defs>
-  <circle cx="{c}" cy="{c}" r="{c}" fill="url(#halo)"/>
-  <circle cx="{c}" cy="{c}" r="{R}" fill="url(#sun)" mask="url(#stripes)"/>
-</svg>
-''')
-
-    props = "".join(f"  --{p}: {hex_color(rgb)};\n" for p, rgb in shared.items())
-    sand_props = "".join(f"  --{p}: {hex_color(sand[field])};\n" for p, field in SAND_PALETTE.items())
-    props += "".join(f"  --{p}-rgb: {', '.join(map(str, shared[p]))};\n" for p in TRANSLUCENT)
     css = [f'''/* Generated by tools/brand.py; edit that, not this. */
 
-/* The app's palette, from its theme. */
-:root {{
-{props}  --teal-hover: {hex_color(hover)};
-}}
-
-:root {{
-  --sand: {SAND};
+/* The sand band, in its theme's band colors. */
+.band.sand {{
+  --bg: var(--sand-bg);
+  --surface: var(--sand-surface);
+  --line: var(--sand-line);
+  --ink: var(--sand-ink);
+  --dim: var(--sand-dim);
+  --teal: var(--sand-teal);
   --shore-h: {SHORE_HEIGHT}px;
 }}
-
-/* The app's Sand palette, for the components inside the sand band. */
-.band.sand {{
-{sand_props}}}
-.sand::before {{ background: url("images/brand/shore-top.svg") 0 100% repeat-x; }}
-.sand::after {{ background: url("images/brand/shore-bottom.svg") 0 0 repeat-x; }}
+.sand::before {{ background: var(--art-shore-top) 0 100% repeat-x; }}
+.sand::after {{ background: var(--art-shore-bottom) 0 0 repeat-x; }}
 
 .hero {{
   --horizon-h: {HEIGHT}px;
-  --sun-y: {SUN_Y}px;
   --sun-wide: {SUN_WIDE}px;
   --sun-narrow: {SUN_NARROW}px;
   --surfer-wide: {SURFER_WIDE}px;
@@ -206,23 +240,22 @@ def main():
 }}
 
 .sun {{
-  top: {SUN_Y - c:.2f}px;
-  width: {2 * c:g}px;
-  height: {cut:.1f}px;
-  margin-left: -{c:g}px;
-  background: url("images/brand/sun.svg") 0 0 / 100% 100% no-repeat;
+  top: var(--sun-top);
+  width: {2 * HALO_R:g}px;
+  height: var(--sun-h);
+  margin-left: -{HALO_R:g}px;
+  background: var(--art-sun) 0 0 / 100% 100% no-repeat;
 }}
 ''']
 
     for name, y, stroke, opacity, tile, seconds, parts in WAVES:
         d = polyline(lambda x: y + wave(x, tile, parts), -6, tile + 6, 2)
-        write(os.path.join(ART, f"sea-{name}.svg"),
-              f'<svg xmlns="http://www.w3.org/2000/svg" width="{tile}" height="{HEIGHT}">'
-              f'<path d="{d}" fill="none" stroke="{TEAL}" stroke-width="{stroke:.1f}" opacity="{opacity}"/></svg>\n')
+        art[f"sea-{name}"] = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{tile}" height="{HEIGHT}">'
+                              f'<path d="{d}" fill="none" stroke="{TEAL}" stroke-width="{stroke:.1f}" opacity="{opacity}"/></svg>\n')
         css.append(f'''
 .sea-{name} {{
   left: -{tile}px;
-  background: url("images/brand/sea-{name}.svg") 50% 0 repeat-x;
+  background: var(--art-sea-{name}) 50% 0 repeat-x;
   animation: sea-{name} {seconds}s linear infinite;
 }}
 @keyframes sea-{name} {{ to {{ transform: translateX({tile}px); }} }}
@@ -232,10 +265,10 @@ def main():
     bx, by, bw, bh = MASCOT_BOX
     box = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{bw * SURFER_SCALE:.1f}" height="{bh * SURFER_SCALE:.1f}" '
            f'viewBox="{bx} {by} {bw} {bh}">')
-    write(os.path.join(ART, "surfer.svg"), f"{box}{mascot}</svg>\n")
+    art["surfer"] = f"{box}{mascot}</svg>\n"
     board, body = re.match(r"\s*(<ellipse[^>]*/>)(.*)", mascot, re.S).groups()
-    write(os.path.join(ART, "board.svg"), f'{box}<g transform="rotate({WIPEOUT_TILT} 0 -3.2)">{board}</g></svg>\n')
-    write(os.path.join(ART, "legs.svg"), f'{box}<g transform="{LEGS_UP}">{body}</g></svg>\n')
+    art["board"] = f'{box}<g transform="rotate({WIPEOUT_TILT} 0 -3.2)">{board}</g></svg>\n'
+    art["legs"] = f'{box}<g transform="{LEGS_UP}">{body}</g></svg>\n'
 
     _, fy, fstroke, _, ftile, fseconds, fparts = WAVES[-1]
     rest = fy - fstroke / 2 + SURFER_SINK - BOARD_BOTTOM * SURFER_SCALE
@@ -255,21 +288,53 @@ def main():
   margin-left: {bx * SURFER_SCALE:.1f}px;
   transform-origin: {-bx * SURFER_SCALE:.1f}px 100%;
   transform: {pose(0)};
-  background: url("images/brand/surfer.svg") 0 0 / 100% 100% no-repeat;
+  background: var(--art-surfer) 0 0 / 100% 100% no-repeat;
   animation: surf {fseconds}s linear infinite;
 }}
 @keyframes surf {{
 {frames}
 }}
 
-.board {{ background-image: url("images/brand/board.svg"); }}
+.board {{ background-image: var(--art-board); }}
 /* The front wave meets a point behind the surfer this much sooner. */
 .legs {{
   margin-left: {bx * SURFER_SCALE - WIPEOUT_GAP:.1f}px;
-  background-image: url("images/brand/legs.svg");
+  background-image: var(--art-legs);
   animation-delay: -{fseconds * WIPEOUT_GAP / ftile:.3f}s;
 }}
 ''')
+
+    # The default first: its `:root` would outweigh a picked theme's block coming before it.
+    for name in [DEFAULT, *(t for t in THEMES if t != DEFAULT)]:
+        p = pals[name]
+        theme_id = name.lower()
+        folder = "" if name == SOURCE else f"{theme_id}/"
+        os.makedirs(os.path.join(ART, folder), exist_ok=True)
+        band_from, band_map = (p, LIGHT_BAND) if p["light"] else (sand, SAND_PALETTE)
+        band_color = p["surface"] if p["light"] else sand["bg"]
+        swaps = {hex_color(night[f]): hex_color(p[f]) for f in RECOLORED}
+        swaps[SAND] = hex_color(band_color)
+        sun, sun_top, sun_h = sun_svg(p["sun_drop"], (TEAL, CORAL, hex_color(night["sun_top"])))
+        for key, svg in {**art, "sun": sun}.items():
+            write(os.path.join(ART, folder, f"{key}.svg"), recolor(svg, swaps))
+
+        shared = {prop: p[field] for prop, field in PALETTE.items()}
+        hover = tuple(round(c + (255 - c) * HOVER_LIGHTEN) for c in shared["teal"])
+        # The alternating band: halfway from the page to its surfaces.
+        band = tuple((a + b) // 2 for a, b in zip(p["bg"], p["surface"]))
+        props = [f"color-scheme: {'light' if p['light'] else 'dark'}"]
+        props += [f"--{prop}: {hex_color(rgb)}" for prop, rgb in shared.items()]
+        props += [f"--{prop}-rgb: {', '.join(map(str, shared[prop]))}" for prop in TRANSLUCENT]
+        props += [f"--teal-hover: {hex_color(hover)}", f"--band: {hex_color(band)}", f"--sand: {hex_color(band_color)}"]
+        props += [f"--sand-{prop}: {hex_color(band_from[field])}" for prop, field in band_map.items()]
+        props += [f"--sun-y: {SUN_Y + p['sun_drop'] * 2 * R:g}px", f"--sun-top: {sun_top:.2f}px", f"--sun-h: {sun_h:.1f}px"]
+        props += [f'--art-{key}: url("images/brand/{folder}{key}.svg")' for key in ["sun", *art]]
+        body = "".join(f"  {line};\n" for line in props)
+        selector = f':root,\n[data-theme="{theme_id}"]' if name == DEFAULT else f'[data-theme="{theme_id}"]'
+        css.append(f"\n/* The app's `{theme_id}` theme. */\n{selector} {{\n{body}}}\n")
+        if name == AUTO_LIGHT:
+            nested = "".join(f"    {line};\n" for line in props)
+            css.append(f"@media (prefers-color-scheme: light) {{\n  :root:not([data-theme]) {{\n{nested}  }}\n}}\n")
     write(CSS, "".join(css))
 
 

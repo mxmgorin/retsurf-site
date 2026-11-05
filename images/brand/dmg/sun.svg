@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="187.5" height="133.9">
+  <defs>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#306230"/><stop offset="0.3" stop-color="#0f380f"/><stop offset="1" stop-color="#306230"/></linearGradient>
+    <radialGradient id="halo"><stop offset="0.62" stop-color="#0f380f" stop-opacity="0.22"/><stop offset="1" stop-color="#0f380f" stop-opacity="0"/></radialGradient>
+    <mask id="stripes"><rect width="187.5" height="187.5" fill="#fff"/><g fill="#000"><rect y="104.06" width="187.5" height="3.28"/><rect y="115.31" width="187.5" height="4.69"/><rect y="128.91" width="187.5" height="6.56"/><rect y="144.84" width="187.5" height="8.91"/></g></mask>
+  </defs>
+  <circle cx="93.75" cy="93.75" r="93.75" fill="url(#halo)"/>
+  <circle cx="93.75" cy="93.75" r="60" fill="url(#sun)" mask="url(#stripes)"/>
+</svg>

@@ -23,17 +23,14 @@
   font-display: swap;
 }
 
-/* The app's palette comes from brand.css; these colors are the site's own. */
+/* Colors, color-scheme and the brand art come from brand.css, per theme. */
 :root {
-  --band: #1a1b1f;
   --radius: 14px;
-  --seam: url("images/brand/seam.svg");
   --header-h: 64px;
   --gutter: 16px;
   --max: 1080px;
   --mono: "Hack", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --display: var(--mono);
-  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -74,7 +71,7 @@ section { padding: 64px 0; }
 section.wrap { padding-top: 64px; padding-bottom: 64px; }
 
 /* Full-bleed band: alternates with the page background so sections read as separate. */
-.band { background: var(--seam) top center repeat-x, var(--seam) bottom center repeat-x, var(--band); }
+.band { background: var(--art-seam) top center repeat-x, var(--art-seam) bottom center repeat-x, var(--band); }
 
 h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0 0 12px; }
 h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 700; }
@@ -126,6 +123,56 @@ h3 { font-size: 22px; font-weight: 700; }
   color: var(--dim);
 }
 .top nav a:hover, .top nav a.current { color: var(--ink); border-bottom-color: var(--teal); text-decoration: none; }
+
+/* Theme menu: a toggle naming the theme in force, over a list in the app's menu style. */
+.theme-menu { position: relative; align-self: center; margin-left: 22px; }
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: none;
+  color: var(--dim);
+  font: 14px var(--mono);
+  cursor: pointer;
+}
+.theme-toggle:hover, .theme-toggle[aria-expanded="true"] { color: var(--ink); border-color: var(--teal); }
+/* Half lit, half dark: the usual mark for a light or dark choice. */
+.theme-icon {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+}
+.themes {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 140px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+.themes button {
+  display: block;
+  width: 100%;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--ink);
+  font: 14px var(--mono);
+  text-align: left;
+  cursor: pointer;
+}
+.themes button:hover { background: rgba(var(--teal-rgb), 0.12); }
+/* The theme in force, as the app marks its selected row. */
+.themes button.current { background: rgba(var(--teal-rgb), 0.18); border-color: var(--teal); }
 
 /* Hero */
 
@@ -365,7 +412,7 @@ figcaption { color: var(--dim); font-size: 14px; margin-top: 10px; }
 .shots.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .sub-title { margin-top: 48px; }
 /* Two plain sections in a row: a seam keeps them apart. */
-section.wrap + section.wrap { background: var(--seam) top center repeat-x; }
+section.wrap + section.wrap { background: var(--art-seam) top center repeat-x; }
 .section-lead { color: var(--dim); max-width: 46em; margin: -12px 0 28px; }
 
 /* Like the app's Controls screen: a teal section label over rows, each a name with its
@@ -510,7 +557,7 @@ td .sub { display: block; color: var(--dim); font-size: 13px; }
 /* Footer */
 
 footer {
-  background: var(--seam) top center repeat-x;
+  background: var(--art-seam) top center repeat-x;
   padding-top: 24px;
   padding-bottom: 40px;
   color: var(--dim);
@@ -521,6 +568,9 @@ footer p { margin: 0 0 6px; }
 /* Narrow screens */
 
 @media (max-width: 860px) {
+  .top nav { gap: 16px; }
+  .theme-menu { margin-left: 16px; }
+  .theme-name { display: none; }
   .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
   .hero { --sun-dx: var(--sun-narrow); --surfer-dx: var(--surfer-narrow); }
   .spot { grid-template-columns: minmax(0, 1fr); gap: 24px; }
@@ -533,6 +583,7 @@ footer p { margin: 0 0 6px; }
   section, section.wrap { padding-top: 44px; padding-bottom: 44px; }
   .hero { padding-top: 16px; }
   .top nav { gap: 14px; }
+  .theme-menu { margin-left: 14px; }
   .top nav a:not([href$="#install"]) { display: none; }
   .devices, .shots, .shots.two, .clips, .links, .also li { grid-template-columns: minmax(0, 1fr); }
   .also code { grid-column: 1; grid-row: auto; margin-top: 4px; }
