@@ -124,9 +124,9 @@ h3 { font-size: 22px; font-weight: 700; }
 }
 .top nav a:hover, .top nav a.current { color: var(--ink); border-bottom-color: var(--teal); text-decoration: none; }
 
-/* Theme menu: a toggle naming the theme in force, over a list in the app's menu style. */
-.theme-menu { position: relative; align-self: center; margin-left: 22px; }
-.theme-toggle {
+/* Header menus: a toggle over a list, which shows while the toggle is expanded. */
+.menu { position: relative; align-self: center; }
+.menu-toggle {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -138,7 +138,22 @@ h3 { font-size: 22px; font-weight: 700; }
   font: 14px var(--mono);
   cursor: pointer;
 }
-.theme-toggle:hover, .theme-toggle[aria-expanded="true"] { color: var(--ink); border-color: var(--teal); }
+.menu-toggle:hover, .menu-toggle[aria-expanded="true"] { color: var(--ink); border-color: var(--teal); }
+
+/* The tabs' menu holds them on the header's full height; its toggle is for narrow screens. */
+.tabs-menu { display: flex; align-self: stretch; }
+.tabs-menu .menu-toggle { display: none; }
+/* Three bars: the usual mark for a menu. */
+.tabs-icon {
+  width: 16px;
+  height: 14px;
+  border-top: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
+}
+
+/* Theme menu: a toggle naming the theme in force, over a list in the app's menu style. */
+.theme-menu { margin-left: 22px; }
 /* Half lit, half dark: the usual mark for a light or dark choice. */
 .theme-icon {
   width: 14px;
@@ -147,6 +162,7 @@ h3 { font-size: 22px; font-weight: 700; }
   border-radius: 50%;
   background: linear-gradient(90deg, currentColor 50%, transparent 50%);
 }
+.menu-toggle[aria-expanded="false"] + .themes { display: none; }
 .themes {
   position: absolute;
   top: calc(100% + 8px);
@@ -581,9 +597,35 @@ footer p { margin: 0 0 6px; }
 
 /* Narrower than the header's full row of tabs and theme toggle, scrollbar included. */
 @media (max-width: 680px) {
-  .top nav { gap: 14px; }
-  .theme-menu { margin-left: 14px; }
-  .top nav a:not([href$="#install"]) { display: none; }
+  .top .wrap { gap: 8px; }
+  .theme-menu { margin-left: auto; }
+  .tabs-menu { order: 1; align-self: center; }
+  .tabs-menu .menu-toggle:not([hidden]) { display: flex; }
+  /* The tabs drop down under their toggle, as the theme list does. */
+  .menu-toggle[aria-expanded="false"] + nav { display: none; }
+  .top nav {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 6px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .top nav a {
+    margin: 0;
+    padding: 7px 12px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--ink);
+  }
+  .top nav a:hover { background: rgba(var(--teal-rgb), 0.12); border-color: transparent; }
+  .top nav a.current { background: rgba(var(--teal-rgb), 0.18); border-color: var(--teal); }
 }
 
 @media (max-width: 560px) {

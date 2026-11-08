@@ -4,10 +4,8 @@
 const KEY = "theme";
 const root = document.documentElement;
 const menu = document.querySelector(".theme-menu");
-const toggle = menu.querySelector(".theme-toggle");
-const list = menu.querySelector(".themes");
 const label = menu.querySelector(".theme-name");
-const picks = [...list.querySelectorAll("[data-theme-pick]")];
+const picks = [...menu.querySelectorAll("[data-theme-pick]")];
 const themeColor = document.querySelector('meta[name="theme-color"]');
 
 const show = () => {
@@ -21,13 +19,6 @@ const show = () => {
   if (themeColor) themeColor.content = getComputedStyle(root).getPropertyValue("--bg").trim();
 };
 
-const open = (on) => {
-  list.hidden = !on;
-  toggle.setAttribute("aria-expanded", on);
-};
-
-toggle.addEventListener("click", () => open(list.hidden));
-
 for (const pick of picks) {
   pick.addEventListener("click", () => {
     const theme = pick.dataset.themePick;
@@ -38,17 +29,8 @@ for (const pick of picks) {
     if (theme) root.dataset.theme = theme;
     else delete root.dataset.theme;
     show();
-    open(false);
   });
 }
-
-// A click elsewhere, or Escape, closes the list.
-addEventListener("click", (ev) => {
-  if (!menu.contains(ev.target)) open(false);
-});
-addEventListener("keydown", (ev) => {
-  if (ev.key === "Escape") open(false);
-});
 
 matchMedia("(prefers-color-scheme: light)").addEventListener?.("change", show);
 menu.hidden = false;

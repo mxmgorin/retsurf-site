@@ -28,21 +28,25 @@
   <script type="module" src="scroll.js"></script>
   <script type="module" src="pad.js"></script>
   <script type="module" src="compare.js"></script>
+  <script type="module" src="menu.js"></script>
   <script type="module" src="themes.js"></script>
 </head>
 <body>
   <header class="top">
     <div class="wrap">
       <a class="brand" href="#">ret<span class="accent">surf</span></a>
-      <nav>
-        <a href="#hardware">Handhelds</a>
-        <a href="#apps">Apps and games</a>
-        <a href="#buttons">Controls</a>
-        <a href="#install">Install</a>
-      </nav>
-      <div class="theme-menu" hidden>
-        <button type="button" class="theme-toggle" aria-haspopup="true" aria-expanded="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-name">Theme</span></button>
-        <div class="themes" role="menu" hidden>
+      <div class="menu tabs-menu">
+        <button type="button" class="menu-toggle" aria-label="Menu" aria-expanded="false" hidden><span class="tabs-icon" aria-hidden="true"></span></button>
+        <nav>
+          <a href="#hardware">Handhelds</a>
+          <a href="#apps">Apps and games</a>
+          <a href="#buttons">Controls</a>
+          <a href="#install">Install</a>
+        </nav>
+      </div>
+      <div class="menu theme-menu" hidden>
+        <button type="button" class="menu-toggle" aria-haspopup="true" aria-expanded="false"><span class="theme-icon" aria-hidden="true"></span><span class="theme-name">Theme</span></button>
+        <div class="themes" role="menu">
           <button type="button" role="menuitemradio" data-theme-pick="">Auto</button>
           <button type="button" role="menuitemradio" data-theme-pick="night">Night</button>
           <button type="button" role="menuitemradio" data-theme-pick="oled">OLED</button>
