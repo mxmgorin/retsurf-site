@@ -114,7 +114,8 @@ h3 { font-size: 22px; font-weight: 700; }
 }
 
 /* The wordmark as text, so forced dark inverts it with the page. */
-.brand { align-self: center; color: var(--ink); font: 30px/1 var(--mono); letter-spacing: -0.02em; }
+.brand { display: flex; align-items: center; align-self: center; color: var(--ink); font: 30px/1 var(--mono); letter-spacing: -0.02em; }
+.brand-icon { width: 34px; height: 34px; margin-right: 10px; }
 .brand:hover { text-decoration: none; }
 
 /* Tabs as on the app's start page: the current one underlined on the header's hairline. */
