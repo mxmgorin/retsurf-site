@@ -75,6 +75,7 @@ section.wrap { padding-top: 64px; padding-bottom: 64px; }
 
 h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0 0 12px; }
 h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 700; }
+h1 .accent { white-space: nowrap; }
 h2 { font-size: clamp(26px, 3.5vw, 36px); font-weight: 700; margin-bottom: 28px; }
 h3 { font-size: 22px; font-weight: 700; }
 

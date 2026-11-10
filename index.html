@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>retsurf - web browser on your handheld</title>
-  <meta name="description" content="retsurf turns sites into apps and games on your handheld: a web browser built on Servo for gamepad and keyboard. It runs on retro handhelds (PortMaster, OnionOS, Allium, spruceOS, CrossMix-OS, NextUI, NX Redux), Android, Linux, Windows and macOS.">
+  <title>retsurf - web browser for any device</title>
+  <meta name="description" content="retsurf is a web browser built on Servo that opens sites as apps and games and runs from a gamepad, a keyboard or touch. It works on retro handhelds (PortMaster, OnionOS, Allium, spruceOS, CrossMix-OS, NextUI, NX Redux), Android, Kindle e-readers, Linux, Windows and macOS.">
   <meta name="author" content="Maxim Gorin">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://retsurf.app/">
-  <meta property="og:title" content="retsurf - web browser on your handheld">
-  <meta property="og:description" content="Sites as apps and games on retro handhelds, Android and desktop. A real web browser built on Servo, driven from a gamepad or a keyboard.">
+  <meta property="og:title" content="retsurf - web browser for any device">
+  <meta property="og:description" content="Sites as apps and games on handhelds, phones, e-readers and desktops. A real web browser built on Servo, driven from a gamepad, a keyboard or touch.">
   <meta property="og:image" content="https://retsurf.app/images/retsurf-og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="retsurf: web browser on your handheld, over a sunset sea with the surfing mascot">
+  <meta property="og:image:alt" content="retsurf: web browser for any device, over a sunset sea with the surfing mascot">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#1c161f">
   <link rel="icon" href="retsurf.svg" type="image/svg+xml">
@@ -38,7 +38,7 @@
       <div class="menu tabs-menu">
         <button type="button" class="menu-toggle" aria-label="Menu" aria-expanded="false" hidden><span class="tabs-icon" aria-hidden="true"></span></button>
         <nav>
-          <a href="#hardware">Handhelds</a>
+          <a href="#devices">Devices</a>
           <a href="#apps">Apps and games</a>
           <a href="#buttons">Controls</a>
           <a href="#install">Install</a>
@@ -62,8 +62,8 @@
     <section class="hero">
       <div class="wrap hero-grid">
         <div class="hero-text">
-          <h1>Web browser on <span class="accent">your handheld</span></h1>
-          <p class="lead">itch.io games, Hacker News and Wikipedia, each a tile on your start page that opens as a game, an app or a site. retsurf is a real web browser built on the <strong><a href="https://servo.org/">Servo</a> engine</strong> and driven from a gamepad or a keyboard, no mouse needed.</p>
+          <h1>Web browser for <span class="accent">any device</span></h1>
+          <p class="lead">A web browser built on the <strong><a href="https://servo.org/">Servo</a> engine</strong>, driven by a gamepad, a keyboard or touch. Sites open as apps and games from its start page.</p>
           <div class="actions">
             <a class="button primary" href="#install" data-pad="a"><kbd>A</kbd>Download</a>
             <a class="button" href="https://github.com/mxmgorin/retsurf" data-pad="y"><kbd>Y</kbd>View on GitHub</a>
@@ -74,7 +74,7 @@
             <a class="badge" href="https://github.com/mxmgorin/retsurf">stars<b data-badge="stars"></b></a>
             <a class="badge" href="https://github.com/mxmgorin/retsurf/releases">downloads<b data-badge="downloads"></b></a>
           </div>
-          <p class="platforms">Retro handhelds &middot; Android &middot; Windows &middot; macOS &middot; Linux</p>
+          <p class="platforms">Handhelds &middot; Android &middot; Kindle &middot; Windows &middot; macOS &middot; Linux</p>
           <p class="hint-bar"><span><kbd>F</kbd>link hints</span><span><kbd>Esc</kbd>cancel</span></p>
         </div>
         <img class="hero-photo" src="images/retsurf-rg35xx-sp.jpg" alt="retsurf on an Anbernic RG35XX SP, the on-screen keyboard raised under the address field" width="800" height="800">
@@ -88,9 +88,9 @@
       </div>
     </section>
 
-    <section id="hardware" class="wrap">
-      <h2>On real handhelds</h2>
-      <p class="section-lead">Runs on the firmware you already have: PortMaster, OnionOS, spruceOS, NextUI and more. From a Miyoo Mini with 128 MB of RAM and no GPU up to Android phones and desktops.</p>
+    <section id="devices" class="wrap">
+      <h2>On many devices</h2>
+      <p class="section-lead">From a Miyoo Mini with 128 MB of RAM and no GPU to Android phones, Kindle e-readers and desktops. Packages for PortMaster, OnionOS, spruceOS, NextUI and more.</p>
       <div class="devices">
         <figure>
           <img src="images/retsurf-rgb30.jpg" alt="retsurf start page on a Powkiddy RGB30" width="660" height="660" loading="lazy">
@@ -102,7 +102,7 @@
         </figure>
         <a class="more" href="https://github.com/mxmgorin/retsurf/discussions/78">
           <strong>And more</strong>
-          <span>Also tested on Anbernic RG35XX SP, Miyoo Mini Flip, Retroid Pocket Flip 2 and Unihertz Titan 2.</span>
+          <span>Also tested on Anbernic RG35XX SP, Miyoo Mini Flip, Retroid Pocket Flip 2, the Unihertz Titan 2 phone and a Kindle Paperwhite.</span>
           <span class="go">See tested devices</span>
         </a>
       </div>
@@ -166,12 +166,12 @@
     </section>
 
     <section id="buttons" class="wrap">
-      <h2>Built for buttons</h2>
+      <h2>Built for any input</h2>
       <article class="spot">
         <div class="spot-text">
-          <h3>Gamepad and keyboard navigation</h3>
+          <h3>Gamepad, keyboard and touch</h3>
           <p>A virtual cursor on the stick or D-pad, Vimium-style link hints that label every link with the buttons or keys that open it, and an on-screen keyboard as a grid or a wheel.</p>
-          <p>Every browser action can be bound to a gamepad gesture or a keyboard shortcut, in the app, with tap, hold and chord.</p>
+          <p>Every browser action can be bound to a gamepad gesture or a keyboard shortcut, in the app, with tap, hold and chord. On phones and e-readers, touch taps and scrolls the page.</p>
         </div>
         <img class="spot-media" src="images/retsurf-hints.png" alt="Link hints over a Wikipedia article, each labeled with gamepad buttons" width="640" height="480" loading="lazy">
       </article>
@@ -247,6 +247,11 @@
                 <td><a href="https://github.com/cizia64/CrossMix-OS">CrossMix-OS</a><span class="sub">TrimUI Smart Pro</span></td>
                 <td><a href="https://github.com/mxmgorin/retsurf/releases/latest/download/retsurf-crossmix.zip">retsurf-crossmix.zip</a></td>
                 <td>root of the SD card</td>
+              </tr>
+              <tr>
+                <td>Kindle<span class="sub">jailbroken, started from KUAL or KOReader</span></td>
+                <td><a href="https://github.com/mxmgorin/retsurf/releases/download/nightly/retsurf-kindle.zip">retsurf-kindle.zip</a><span class="sub">nightly build</span></td>
+                <td>root of the Kindle's USB storage</td>
               </tr>
               <tr>
                 <td>Android</td>
