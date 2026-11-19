@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>retsurf - web browser for any device</title>
-  <meta name="description" content="retsurf is a web browser built on Servo that opens sites as apps and games and runs from a gamepad, a keyboard or touch. It works on retro handhelds (PortMaster, OnionOS, Allium, spruceOS, CrossMix-OS, NextUI, NX Redux), Android, Kindle e-readers, Linux, Windows and macOS.">
+  <meta name="description" content="retsurf is a portable web browser built on Servo, an independent web engine written in Rust. It runs from a gamepad, a keyboard or touch, opens sites as apps and games, and works on retro handhelds (PortMaster, OnionOS, Allium, spruceOS, CrossMix-OS, NextUI, NX Redux), Android, Kindle e-readers, Linux, Windows and macOS.">
   <meta name="author" content="Maxim Gorin">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://retsurf.app/">
   <meta property="og:title" content="retsurf - web browser for any device">
-  <meta property="og:description" content="Sites as apps and games on handhelds, phones, e-readers and desktops. A real web browser built on Servo, driven from a gamepad, a keyboard or touch.">
+  <meta property="og:description" content="A portable web browser on Servo, the independent Rust engine. Sites as apps and games on handhelds, phones, e-readers and desktops, driven from a gamepad, a keyboard or touch.">
   <meta property="og:image" content="https://retsurf.app/images/retsurf-og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -63,7 +63,7 @@
       <div class="wrap hero-grid">
         <div class="hero-text">
           <h1>Web browser for <span class="accent">any device</span></h1>
-          <p class="lead">A web browser built on the <strong><a href="https://servo.org/">Servo</a> engine</strong>, driven by a gamepad, a keyboard or touch. Sites open as apps and games from its start page.</p>
+          <p class="lead">Browse the web and launch sites as apps and games, with a gamepad, a keyboard or touch. Built on <strong><a href="https://servo.org/">Servo</a></strong>, an independent web engine written in Rust.</p>
           <div class="actions">
             <a class="button primary" href="#install" data-pad="a"><kbd>A</kbd>Download</a>
             <a class="button" href="https://github.com/mxmgorin/retsurf" data-pad="y"><kbd>Y</kbd>View on GitHub</a>
@@ -148,6 +148,7 @@
             <p>Play browser games from itch.io and similar sites, with WebGL 2, gamepad and audio.</p>
             <p>Game mode hides the browser and routes input directly to the page. Input maps let you map controls to keyboard keys, mouse or gamepad input, with an editor built in.</p>
             <p>It can also cut the game out of the page, fit it pixel-perfectly to the screen and apply CRT, LCD or upscaling shaders.</p>
+            <p>It is also a runner: <code>--kiosk</code> starts a local game folder or a bookmark alone, with no browser UI, so a web game can ship as a port of its own.</p>
           </div>
           <img class="spot-media" src="images/retsurf-game-mode.png" alt="Quick Access over the WebGL racer HexGL in game mode, drawn through a CRT shader" width="640" height="480" loading="lazy">
         </article>
@@ -204,7 +205,8 @@
         <li><strong>Audio and video</strong><span>For direct files and embedded players; streaming sites that need MSE are not supported yet.</span><code>H.264 MP4</code></li>
         <li><strong>In-app updates</strong><span>From GitHub, with stable, beta and nightly channels.</span><code>stable &middot; beta &middot; nightly</code></li>
         <li><strong>No display server needed</strong><span>SDL2 draws through whatever the firmware ships, OpenGL ES where there is a GPU and a software renderer where there is not.</span><code>GLES &middot; software</code></li>
-        <li><strong>Written in Rust</strong><span>On Servo, SDL2 and egui.</span><code>Servo &middot; SDL2 &middot; egui</code></li>
+        <li><strong>Built on Servo</strong><span>An independent web engine written in Rust; engine bugs found in retsurf are fixed upstream.</span><code>Servo &middot; SDL2 &middot; egui</code></li>
+        <li><strong>No telemetry</strong><span>The only requests it makes on its own are the update check and the ad-block list refresh; both can be turned off in Settings.</span><code>update &middot; filter lists</code></li>
       </ul>
     </section>
 

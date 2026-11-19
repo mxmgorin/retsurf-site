@@ -542,6 +542,8 @@ section.wrap + section.wrap { background: var(--art-seam) top center repeat-x; }
 .sand::before, .sand::after { content: ""; position: absolute; left: 0; right: 0; height: var(--shore-h); }
 .sand::before { bottom: 100%; }
 .sand::after { top: 100%; }
+.sand h2::before { color: var(--sand-coral); }
+.sand .table-wrap { box-shadow: 5px 5px 0 rgba(var(--coral-rgb), 0.65); }
 
 .table-wrap {
   overflow-x: auto;

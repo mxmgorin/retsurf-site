@@ -58,6 +58,7 @@ SAND_PALETTE = {
     "ink": "ink",
     "dim": "muted",
     "teal": "accent",
+    "coral": "surf_warm",
 }
 LIGHT_BAND = {
     "bg": "field",
@@ -66,7 +67,12 @@ LIGHT_BAND = {
     "ink": "ink",
     "dim": "muted",
     "teal": "accent",
+    "coral": "surf_warm",
 }
+# Sand under a dark theme, in its sunset: the band and these of its colors mixed this far
+# toward the theme's coral; text and accents keep their contrast.
+SUNSET_TINT = 0.1
+SUNSET_LIT = ["bg", "surface", "line"]
 # Swapped for the theme's own in every SVG, as the app does in its banner.
 RECOLORED = ["bg", "ink", "accent", "surf_warm", "deep_teal", "sun_top", "wave_mid", "border"]
 # Those the site also draws translucent: they get an `-rgb` property of bare channels.
@@ -190,6 +196,11 @@ def hex_color(rgb):
     return "#" + "".join(f"{c:02x}" for c in rgb)
 
 
+def mix(rgb, toward, share):
+    """`rgb` moved `share` of the way to `toward`, channel by channel."""
+    return tuple(round(c + (t - c) * share) for c, t in zip(rgb, toward))
+
+
 def write(name, text):
     with open(name, "w") as out:
         out.write(text)
@@ -311,7 +322,10 @@ def main():
         folder = "" if name == SOURCE else f"{theme_id}/"
         os.makedirs(os.path.join(ART, folder), exist_ok=True)
         band_from, band_map = (p, LIGHT_BAND) if p["light"] else (sand, SAND_PALETTE)
-        band_color = p["surface"] if p["light"] else sand["bg"]
+        tint = 0 if p["light"] else SUNSET_TINT
+        band_color = mix(p["surface"] if p["light"] else sand["bg"], p["surf_warm"], tint)
+        band_colors = {prop: band_from[field] for prop, field in band_map.items()}
+        band_colors.update({prop: mix(band_colors[prop], p["surf_warm"], tint) for prop in SUNSET_LIT})
         swaps = {hex_color(night[f]): hex_color(p[f]) for f in RECOLORED}
         swaps[SAND] = hex_color(band_color)
         sun, sun_top, sun_h = sun_svg(p["sun_drop"], (TEAL, CORAL, hex_color(night["sun_top"])))
@@ -319,14 +333,14 @@ def main():
             write(os.path.join(ART, folder, f"{key}.svg"), recolor(svg, swaps))
 
         shared = {prop: p[field] for prop, field in PALETTE.items()}
-        hover = tuple(round(c + (255 - c) * HOVER_LIGHTEN) for c in shared["teal"])
+        hover = mix(shared["teal"], (255, 255, 255), HOVER_LIGHTEN)
         # The alternating band: halfway from the page to its surfaces.
         band = tuple((a + b) // 2 for a, b in zip(p["bg"], p["surface"]))
         props = [f"color-scheme: {'light' if p['light'] else 'dark'}"]
         props += [f"--{prop}: {hex_color(rgb)}" for prop, rgb in shared.items()]
         props += [f"--{prop}-rgb: {', '.join(map(str, shared[prop]))}" for prop in TRANSLUCENT]
         props += [f"--teal-hover: {hex_color(hover)}", f"--band: {hex_color(band)}", f"--sand: {hex_color(band_color)}"]
-        props += [f"--sand-{prop}: {hex_color(band_from[field])}" for prop, field in band_map.items()]
+        props += [f"--sand-{prop}: {hex_color(rgb)}" for prop, rgb in band_colors.items()]
         props += [f"--sun-y: {SUN_Y + p['sun_drop'] * 2 * R:g}px", f"--sun-top: {sun_top:.2f}px", f"--sun-h: {sun_h:.1f}px"]
         props += [f'--art-{key}: url("images/brand/{folder}{key}.svg")' for key in ["sun", *art]]
         body = "".join(f"  {line};\n" for line in props)
