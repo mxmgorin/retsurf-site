@@ -202,11 +202,22 @@
       <h3 class="also-title">Also in the box</h3>
       <ul class="also">
         <li><strong>Tabs, bookmarks, history and downloads</strong><span>In one full-screen menu; downloads run in the background.</span><code>one menu</code></li>
-        <li><strong>Audio and video</strong><span>For direct files and embedded players; streaming sites that need MSE are not supported yet.</span><code>H.264 MP4</code></li>
+        <li><strong>Audio and video</strong><span>For direct files and embedded players.</span><code>H.264 MP4</code></li>
         <li><strong>In-app updates</strong><span>From GitHub, with stable, beta and nightly channels.</span><code>stable &middot; beta &middot; nightly</code></li>
         <li><strong>No display server needed</strong><span>SDL2 draws through whatever the firmware ships, OpenGL ES where there is a GPU and a software renderer where there is not.</span><code>GLES &middot; software</code></li>
         <li><strong>Built on Servo</strong><span>An independent web engine written in Rust; engine bugs found in retsurf are fixed upstream.</span><code>Servo &middot; SDL2 &middot; egui</code></li>
         <li><strong>No telemetry</strong><span>The only requests it makes on its own are the update check and the ad-block list refresh; both can be turned off in Settings.</span><code>update &middot; filter lists</code></li>
+      </ul>
+      <h3 class="also-title" id="limitations">Limitations</h3>
+      <ul class="also">
+        <li><strong>Site compatibility</strong><span>Servo does not support every web feature yet: some sites render incorrectly or break.</span><code>Servo</code></li>
+        <li><strong>Streaming video</strong><span>No Media Source Extensions: YouTube, Twitch and similar players do not play.</span><code>no MSE</code></li>
+        <li><strong>Media formats</strong><span>Video: H.264 in MP4 only, no WebM, VP9, AV1 or HEVC. Audio: MP3, AAC, FLAC, Vorbis and WAV, no Opus.</span><code>H.264 MP4</code></li>
+        <li><strong>DRM</strong><span>No Encrypted Media Extensions: Netflix, Spotify and other DRM services do not play.</span><code>no EME</code></li>
+        <li><strong>Video calls</strong><span>No WebRTC.</span><code>no WebRTC</code></li>
+        <li><strong>Extensions</strong><span>Browser extensions are not supported.</span><code>none</code></li>
+        <li><strong>Low-end devices</strong><span>Heavy sites load slowly and can run out of memory on 128 MB devices.</span><code>128 MB</code></li>
+        <li><strong>Security</strong><span>All sites run in one process, with no site isolation.</span><code>one process</code></li>
       </ul>
     </section>
 
@@ -278,7 +289,7 @@
             </tbody>
           </table>
         </div>
-        <p class="note"><strong>Early days.</strong> retsurf is in early development: expect bugs and sites that do not render yet. Not sure about your device? See how it runs for others in <a href="https://github.com/mxmgorin/retsurf/discussions/78">Tested devices</a>.</p>
+        <p class="note"><strong>Early days.</strong> retsurf is in early development: expect bugs and sites that do not render yet; see <a href="#limitations">Limitations</a>. Not sure about your device? See how it runs for others in <a href="https://github.com/mxmgorin/retsurf/discussions/78">Tested devices</a>.</p>
       </div>
     </section>
 
